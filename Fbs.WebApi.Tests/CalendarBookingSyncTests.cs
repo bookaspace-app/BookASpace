@@ -134,7 +134,7 @@ public class CalendarBookingSyncTests
         var @event = await Assert.That(setup.Events()).HasSingleItem();
         await Assert.That(@event["id"]!.GetValue<string>()).IsEqualTo(booking.Id.ToString("N"));
         await Assert.That(@event["summary"]!.GetValue<string>()).IsEqualTo("Alpha Section training");
-        await Assert.That(@event["location"]!.GetValue<string>()).IsEqualTo("Field");
+        await Assert.That(@event["location"]!.GetValue<string>()).IsEqualTo("Field (Group)");
         await Assert.That(@event["description"]!.GetValue<string>()).Contains("Point of contact: SGT Poc / 6598765432");
         await Assert.That(@event["description"]!.GetValue<string>()).Contains("Booked by: Alpha / CPT Booker");
         await Assert.That(@event["description"]!.GetValue<string>()).Contains("Number: 6591000001");

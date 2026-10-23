@@ -5,7 +5,8 @@ using System.Text;
 namespace Fbs.WebApi.Notifications;
 
 /// <summary>A booking as it is told, with its times in the tenant's time zone.</summary>
-public sealed record BookingSummary(Guid Id, string Facility, DateTimeOffset Start, DateTimeOffset End);
+/// <param name="Group">The group the facility is in, told along with its name.</param>
+public sealed record BookingSummary(Guid Id, string Facility, DateTimeOffset Start, DateTimeOffset End, string? Group = null);
 
 public sealed record Person(string? Unit, string Name, string? Phone);
 
@@ -62,7 +63,7 @@ public static class TelegramBookingMessages
                     ? string.Empty
                     : $"\nWas: {Format(previousStart.Value)} – {Format(previousEnd.Value)}";
 
-            return $"<b>{verb}</b> · <b>{Encode(booking.Facility)}</b>\n{Encode(conduct)}\n{Format(booking.Start)} – {Format(booking.End)}{previously}{footer}\nRef: {booking.Id}";
+            return $"<b>{verb}</b> · {FacilityOf(booking)}\n{Encode(conduct)}\n{Format(booking.Start)} – {Format(booking.End)}{previously}{footer}\nRef: {booking.Id}";
         }
 
         var header = $"<b>{verb}</b> · <b>{bookings.Count} bookings</b>\n{Encode(conduct)}";
@@ -73,7 +74,7 @@ public static class TelegramBookingMessages
         var listed = 0;
         foreach (var booking in bookings)
         {
-            var line = $"\n• <b>{Encode(booking.Facility)}</b> · {Format(booking.Start)} – {Format(booking.End)} ({ShortRef(booking.Id)})";
+            var line = $"\n• {FacilityOf(booking)} · {Format(booking.Start)} – {Format(booking.End)} ({ShortRef(booking.Id)})";
             if (lines.Length + line.Length > budget)
             {
                 break;
@@ -90,6 +91,11 @@ public static class TelegramBookingMessages
 
         return header + lines + footer + reference;
     }
+
+    private static string FacilityOf(BookingSummary booking) =>
+        string.IsNullOrWhiteSpace(booking.Group)
+            ? $"<b>{Encode(booking.Facility)}</b>"
+            : $"<b>{Encode(booking.Facility)}</b> ({Encode(booking.Group)})";
 
     /// <summary>Spelled out, the same wherever the server is, and in the time zone it is given.</summary>
     private static string Format(DateTimeOffset time) => time.ToString("f", CultureInfo.InvariantCulture);

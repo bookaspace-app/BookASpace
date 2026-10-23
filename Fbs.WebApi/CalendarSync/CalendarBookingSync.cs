@@ -142,7 +142,7 @@ public sealed class CalendarBookingSync(ISqlSugarClient sql, CalendarService cal
             Id = eventId,
             Status = "confirmed",
             Summary = $"{unit} {booking.Conduct}".Trim(),
-            Location = facility?.Name,
+            Location = string.IsNullOrWhiteSpace(facility?.Group) ? facility?.Name : $"{facility.Name} ({facility.Group})",
             Start = new EventDateTime { DateTimeDateTimeOffset = TimeZoneInfo.ConvertTime(booking.StartUtc, zone), TimeZone = tenant.TimeZone },
             End = new EventDateTime { DateTimeDateTimeOffset = TimeZoneInfo.ConvertTime(booking.EndUtc, zone), TimeZone = tenant.TimeZone },
             Description = $"""
