@@ -86,7 +86,8 @@ public sealed class TelegramBookingNotifier(
                     b.Id,
                     facilities.GetValueOrDefault(b.FacilityId)?.Name ?? "Unknown facility",
                     TimeZoneInfo.ConvertTime(b.StartUtc, zone),
-                    TimeZoneInfo.ConvertTime(b.EndUtc, zone)
+                    TimeZoneInfo.ConvertTime(b.EndUtc, zone),
+                    facilities.GetValueOrDefault(b.FacilityId)?.Group
                 ))
                 .ToList(),
             first.Conduct,

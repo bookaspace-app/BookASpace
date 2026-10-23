@@ -35,6 +35,33 @@ public class TelegramBookingMessagesTests
     }
 
     [Test]
+    public async Task The_group_of_the_facility_is_told_along_with_its_name()
+    {
+        var single = TelegramBookingMessages.Build(
+            BookingChange.Created,
+            [Summary() with { Group = "Outdoor" }],
+            "Range practice",
+            null,
+            "SGT Poc",
+            "6598765432",
+            Booker
+        );
+        var several = TelegramBookingMessages.Build(
+            BookingChange.Created,
+            [Summary() with { Group = "Outdoor" }, Summary(facility: "Hall") with { Group = "R&D" }],
+            "Range practice",
+            null,
+            "SGT Poc",
+            "6598765432",
+            Booker
+        );
+
+        await Assert.That(single).StartsWith("<b>CREATED</b> · <b>Field</b> (Outdoor)\n");
+        await Assert.That(several).Contains("\n• <b>Field</b> (Outdoor) · ");
+        await Assert.That(several).Contains("\n• <b>Hall</b> (R&amp;D) · ");
+    }
+
+    [Test]
     public async Task What_people_typed_cannot_break_the_message()
     {
         var text = TelegramBookingMessages.Build(
