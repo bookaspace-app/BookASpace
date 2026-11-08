@@ -31,10 +31,10 @@ function validate(values: typeof state): FormError[] {
   const digits = values.phone.replace(/\D/g, '')
 
   if (!digits) {
-    errors.push({ name: 'phone', message: 'Enter a phone number.' })
+    errors.push({ name: 'phone', message: 'Please enter your phone number.' })
   }
   else if (digits.length !== 8) {
-    errors.push({ name: 'phone', message: 'Use 8 digits.' })
+    errors.push({ name: 'phone', message: 'Please enter an 8-digit Singapore phone number.' })
   }
 
   return errors
@@ -42,7 +42,7 @@ function validate(values: typeof state): FormError[] {
 
 function onFormError() {
   toast.add({
-    title: 'Check the phone number.',
+    title: 'Please check your phone number.',
     color: 'error',
     icon: 'i-lucide-circle-x',
     duration: 3000,
@@ -63,7 +63,7 @@ function onFormSubmit({ data }: FormSubmitEvent<typeof state>) {
         }
 
         toast.add({
-          title: error.reason ?? 'Couldn\'t send the code',
+          title: error.reason ?? 'Unable to send verification code',
           color: 'error',
           icon: 'i-lucide-circle-x',
           duration: 3000,
@@ -74,8 +74,8 @@ function onFormSubmit({ data }: FormSubmitEvent<typeof state>) {
       if (!e?.errors?.length) {
         toast.add({
           title: error.status === 401
-            ? 'Wait a minute before asking for another OTP.'
-            : 'Something went wrong. Try again.',
+            ? 'Please wait a minute before requesting another code.'
+            : 'Something went wrong. Please try again.',
           color: 'error',
           icon: 'i-lucide-circle-x',
           duration: 3000,

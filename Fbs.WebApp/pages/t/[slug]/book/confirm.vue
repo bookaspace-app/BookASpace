@@ -78,15 +78,15 @@ function validate(values: typeof state): FormError[] {
     errors.push({ name: 'conduct', message: 'Conduct name is required.' })
   }
   else if (values.conduct.length > 100) {
-    errors.push({ name: 'conduct', message: 'Keep it to 100 characters.' })
+    errors.push({ name: 'conduct', message: 'Conduct name must be 100 characters or fewer.' })
   }
 
   if (!values.pocName.trim()) {
-    errors.push({ name: 'pocName', message: 'A point of contact is needed.' })
+    errors.push({ name: 'pocName', message: 'Point of contact is required.' })
   }
 
   if (!values.pocPhone.trim()) {
-    errors.push({ name: 'pocPhone', message: 'Their phone number is needed.' })
+    errors.push({ name: 'pocPhone', message: 'Phone number is required.' })
   }
 
   return errors
@@ -130,7 +130,7 @@ function onSubmit() {
       for (const err of problem?.errors ?? []) {
         const match = /^slots\[(\d+)\]/i.exec(err.name ?? '')
         if (match) {
-          slotErrors[Number(match[1])] ??= err.reason ?? 'This slot can\'t be booked'
+          slotErrors[Number(match[1])] ??= err.reason ?? 'This slot is unavailable'
         }
         else if (err.reason) {
           otherErrors.push(err.reason)
@@ -141,10 +141,10 @@ function onSubmit() {
       // The batch is all or nothing, so nothing was booked
       const count = Object.keys(slotErrors).length
       errorToastId = toast.add({
-        title: submitted.length > 1 && count ? 'Nothing was booked' : 'Couldn\'t make the booking',
+        title: submitted.length > 1 && count ? 'Bookings could not be completed' : 'Unable to create booking',
         description: submitted.length > 1 && count
-          ? `${count} ${count === 1 ? 'slot' : 'slots'} can't be booked. Remove ${count === 1 ? 'it' : 'them'} and try again.`
-          : Object.values(slotErrors)[0] ?? otherErrors[0] ?? (getErrorStatus(error) === 429 ? 'Wait a little, then try again.' : undefined),
+          ? `${count} ${count === 1 ? 'slot is' : 'slots are'} unavailable. Remove ${count === 1 ? 'it' : 'them'} and try again.`
+          : Object.values(slotErrors)[0] ?? otherErrors[0] ?? (getErrorStatus(error) === 429 ? 'Please wait a moment and try again.' : undefined),
         color: 'error',
         icon: 'i-lucide-circle-x',
       }).id
@@ -190,7 +190,7 @@ const describe = (slot: { start: Date, end: Date }) => describeSlot(slot, df.val
         <UPageCard
           v-if="created.length"
           :title="`${created.length} bookings created`"
-          description="People who get booking notices receive one message for the whole batch."
+          description="Subscribed members receive a single summary notification for this batch."
           icon="i-lucide-circle-check"
           variant="subtle"
           :ui="{ leadingIcon: 'text-success' }"
@@ -242,7 +242,7 @@ const describe = (slot: { start: Date, end: Date }) => describeSlot(slot, df.val
           variant="subtle"
           icon="i-lucide-circle-alert"
           title="No time slot selected"
-          description="Nothing's selected yet. Pick a facility and a time back on the timeline."
+          description="No time slot selected. Please select a facility and time from the timeline."
           :actions="[{ label: 'Back to new booking', to: path('book'), color: 'error', variant: 'outline' }]"
         />
 
@@ -293,12 +293,12 @@ const describe = (slot: { start: Date, end: Date }) => describeSlot(slot, df.val
               variant="subtle"
               icon="i-lucide-circle-alert"
               :title="slots.length === 1
-                ? 'This slot can\'t be booked.'
-                : `${problemCount} ${problemCount === 1 ? 'slot' : 'slots'} can't be booked.`"
+                ? 'This slot cannot be booked.'
+                : `${problemCount} ${problemCount === 1 ? 'slot is' : 'slots are'} unavailable.`"
               :description="slots.length === 1
-                ? 'Remove it and pick another time.'
-                : 'They go in as one batch, so take out the clashes and try again.'"
-              :actions="[{ label: problemCount === 1 ? 'Remove it' : 'Remove them', color: 'error', variant: 'outline', onClick: removeProblemSlots }]"
+                ? 'Remove it and choose another time.'
+                : 'Bookings are confirmed as a single batch. Please remove conflicting slots and try again.'"
+              :actions="[{ label: problemCount === 1 ? 'Remove slot' : 'Remove conflicting slots', color: 'error', variant: 'outline', onClick: removeProblemSlots }]"
             />
           </UPageCard>
 
@@ -324,13 +324,13 @@ const describe = (slot: { start: Date, end: Date }) => describeSlot(slot, df.val
               >
                 <UInput
                   v-model="state.pocName"
-                  placeholder="Rank and name"
+                  placeholder="Name or appointment"
                   class="w-full"
                 />
               </UFormField>
 
               <UFormField
-                label="Their phone"
+                label="Phone number"
                 name="pocPhone"
               >
                 <UInput

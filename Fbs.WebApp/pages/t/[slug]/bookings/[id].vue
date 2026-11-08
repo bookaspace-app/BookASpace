@@ -77,7 +77,7 @@ async function submit() {
   }
   catch (e) {
     const reasons = getErrorReasons(e)
-    problems.value = reasons.length ? reasons : [getErrorStatus(e) === 403 ? 'You can only change bookings made by you or your unit.' : 'It could not be saved. Try again.']
+    problems.value = reasons.length ? reasons : [getErrorStatus(e) === 403 ? 'You can only edit bookings made by you or your unit.' : 'Unable to save changes. Please try again.']
   }
 }
 
@@ -109,7 +109,7 @@ async function cancelBooking() {
     await router.push(path())
   }
   catch {
-    toast.add({ title: 'Couldn\'t cancel it', description: 'Somebody may have done that already.', color: 'error' })
+    toast.add({ title: 'Unable to cancel booking', description: 'This booking may have already been cancelled.', color: 'error' })
     cancelling.value = false
     await invalidateBookings(slug.value)
   }
@@ -159,8 +159,8 @@ const details = computed(() => {
 
         <UAlert
           v-else-if="error || !booking"
-          title="This booking isn't there"
-          description="It may have been cancelled, or belong to another organization."
+          title="Booking not found"
+          description="This booking may have been cancelled or belongs to another organization."
           color="neutral"
           variant="subtle"
           icon="i-lucide-circle-slash"
@@ -178,7 +178,7 @@ const details = computed(() => {
               #footer
             >
               <UBadge
-                :label="isOver ? 'Over' : 'Underway'"
+                :label="isOver ? 'Completed' : 'In progress'"
                 :color="isOver ? 'neutral' : 'success'"
                 variant="subtle"
               />
@@ -225,7 +225,7 @@ const details = computed(() => {
               v-else
               class="text-sm text-muted"
             >
-              Only {{ booking.bookedBy.displayName }}, their unit and admins can change this.
+              Only {{ booking.bookedBy.displayName }}, members of their unit, or administrators can edit this booking.
             </p>
           </UPageCard>
 
@@ -266,7 +266,7 @@ const details = computed(() => {
                     maxlength="200"
                   />
                 </UFormField>
-                <UFormField label="Their phone">
+                <UFormField label="Phone number">
                   <UInput
                     v-model="form.pocPhone"
                     class="w-full"
@@ -279,7 +279,7 @@ const details = computed(() => {
               <div class="grid gap-4 sm:grid-cols-2">
                 <UFormField
                   label="Starts"
-                  :description="isOver ? 'This booking is over, so the time can\'t be changed.' : hasStarted ? 'This booking has started. You can only change when it ends.' : undefined"
+                  :description="isOver ? 'This booking has ended and its time can no longer be changed.' : hasStarted ? 'This booking has started. You can only modify the end time.' : undefined"
                 >
                   <UInput
                     v-model="form.start"
@@ -304,7 +304,7 @@ const details = computed(() => {
 
               <UAlert
                 v-if="problems.length"
-                title="It couldn't be saved"
+                title="Unable to save changes"
                 color="error"
                 variant="subtle"
                 icon="i-lucide-circle-alert"
@@ -343,7 +343,7 @@ const details = computed(() => {
       <UModal
         v-model:open="cancelling"
         title="Cancel this booking?"
-        description="The record stays and the time opens up. Anyone already notified is told it's cancelled."
+        description="The time slot will be released for others to book. Subscribed members will be notified of the cancellation."
       >
         <template #footer>
           <div class="flex gap-2">
@@ -354,7 +354,7 @@ const details = computed(() => {
               @click="cancelBooking"
             />
             <UButton
-              label="Keep it"
+              label="Keep booking"
               color="neutral"
               variant="ghost"
               @click="keep"

@@ -157,7 +157,7 @@ const basketClashCount = computed(() => basketClashes.value.filter(Boolean).leng
 
 const clashMessages: Record<SlotClash['kind'], string> = {
   past: 'This time has already passed',
-  existing: 'Clashes with an existing booking',
+  existing: 'Conflicts with an existing booking',
   selection: 'Overlaps a slot in your list',
 }
 
@@ -209,7 +209,7 @@ function selectWholeDay() {
 
   const { start, end } = wholeDay(selection.value.start, now.value, zone.value)
   if (end <= start) {
-    toast.add({ title: 'This day is almost over.', description: 'Pick a later day to book it whole.', color: 'warning', icon: 'i-lucide-triangle-alert', duration: 3000 })
+    toast.add({ title: 'Cannot select full day', description: 'This day has already ended. Please select a future date to book the entire day.', color: 'warning', icon: 'i-lucide-triangle-alert', duration: 3000 })
     return
   }
 
@@ -358,8 +358,8 @@ function onViewChange({ start, end, id }: { start: Date, end: Date, id: string }
 
       <UAlert
         v-if="!facilitiesIsPending && !facilities?.length"
-        title="There is nothing you can book yet"
-        description="An admin has to add facilities, or open some up for your unit."
+        title="No bookable facilities available"
+        description="An administrator needs to add facilities or grant booking access to your unit."
         color="warning"
         variant="subtle"
         icon="i-lucide-info"
@@ -409,7 +409,7 @@ function onViewChange({ start, end, id }: { start: Date, end: Date, id: string }
           name="i-lucide-globe"
           class="size-4"
         />
-        Times are in {{ timeZone }}, where {{ org?.name }} is, not where you are.
+        Times are shown in {{ org?.name }}'s time zone ({{ timeZone }}).
       </p>
 
       <div
@@ -525,7 +525,7 @@ function onViewChange({ start, end, id }: { start: Date, end: Date, id: string }
             v-else
             class="text-muted"
           >
-            {{ basket.slots.value.length ? 'Pick another slot, or continue with your list.' : 'No time slot selected yet.' }}
+            {{ basket.slots.value.length ? 'Select another slot, or continue with your list.' : 'No time slot selected yet.' }}
           </p>
         </div>
 

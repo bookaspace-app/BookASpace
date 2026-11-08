@@ -24,7 +24,7 @@ async function makeLink() {
     link.value = { url: started.url, expiresAt: started.expiresAt }
   }
   catch {
-    toast.add({ title: 'Couldn\'t make the link', description: 'Try again in a moment.', color: 'error' })
+    toast.add({ title: 'Unable to generate link', description: 'Please try again in a moment.', color: 'error' })
   }
 }
 
@@ -51,13 +51,13 @@ watch(me, async (value) => {
     <UPageCard
       v-else-if="error || !claim"
       title="There is nothing to take over here"
-      description="Either this organization isn't handing out places any more, or you are in it already."
+      description="This organization is no longer accepting claims, or you are already an active member."
       variant="subtle"
       icon="i-lucide-circle-slash"
     >
       <UButton
         to="/"
-        label="Go to your organizations"
+        label="Back to organizations"
         color="neutral"
         variant="subtle"
       />
@@ -66,7 +66,7 @@ watch(me, async (value) => {
     <UPageCard
       v-else
       :title="`Take over your place in ${claim.organizationName}`"
-      description="Your old place was tied to a phone number. Open the link from the same Telegram chat the bot used for login codes."
+      description="Your previous account was linked to your phone number. Open the link from the same Telegram account you used previously."
       variant="subtle"
       icon="i-lucide-user-check"
     >
@@ -88,10 +88,10 @@ watch(me, async (value) => {
             icon="i-simple-icons-telegram"
           />
           <p class="text-sm text-muted">
-            The link works once, for ten minutes. After the bot gives you your place, this page moves on.
+            The link is valid for 10 minutes and can only be used once. Once verified in Telegram, you will be redirected automatically.
           </p>
           <p class="text-sm text-muted">
-            If the bot says the chat isn't linked to anyone, you opened it from a different Telegram account than before.
+            If Telegram reports that your chat is not linked to any account, ensure you are signed in with the same Telegram account as before.
           </p>
         </div>
       </template>

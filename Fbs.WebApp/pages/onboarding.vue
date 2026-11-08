@@ -69,16 +69,16 @@ async function submit() {
       serverErrors.value = [{ name: 'slug', message: 'That address is taken. Try another.' }]
     }
     else if (codes.includes('slug-reserved')) {
-      serverErrors.value = [{ name: 'slug', message: 'That address can\'t be used. Try another.' }]
+      serverErrors.value = [{ name: 'slug', message: 'That address cannot be used. Please choose another.' }]
     }
     else if (codes.includes('tenant-limit')) {
       limitReached.value = true
     }
     else if (status === 429) {
-      toast.add({ title: 'Too many tries', description: 'Wait a little, then try again.', color: 'warning' })
+      toast.add({ title: 'Too many requests', description: 'Please wait a moment before trying again.', color: 'warning' })
     }
     else {
-      toast.add({ title: 'Couldn\'t make it', description: getErrorReasons(error)[0] ?? 'Something went wrong. Try again.', color: 'error' })
+      toast.add({ title: 'Failed to create organization', description: getErrorReasons(error)[0] ?? 'Please try again.', color: 'error' })
     }
   }
 }
@@ -95,14 +95,14 @@ async function join() {
 <template>
   <div class="space-y-6">
     <UPageCard
-      title="Make an organization"
-      description="A unit, a club, a team. You start as the admin, and everyone else comes in from a link."
+      title="Create an organization"
+      description="Set up a workspace for your team or organization. You will start as administrator, and other members can join via an invite link."
       variant="subtle"
     >
       <UAlert
         v-if="limitReached"
-        title="You have made as many organizations as you can"
-        description="An admin in one of them can make you an admin there. Joining somewhere else takes a link."
+        title="Maximum organizations reached"
+        description="You have reached the maximum number of organizations you can create. You can still join existing organizations via invite links."
         color="warning"
         variant="subtle"
         icon="i-lucide-triangle-alert"
@@ -131,7 +131,7 @@ async function join() {
         <UFormField
           label="Address"
           name="slug"
-          :description="`The address is /t/${state.slug || 'alpha-company'}`"
+          :description="`Your organization URL will be /t/${state.slug || 'alpha-company'}`"
           required
         >
           <UInput
@@ -146,7 +146,7 @@ async function join() {
           <UFormField
             label="Time zone"
             name="timeZone"
-            description="Booking times are shown in this."
+            description="Booking times and schedules will be displayed in this time zone."
           >
             <USelectMenu
               v-model="state.timeZone"
@@ -158,7 +158,7 @@ async function join() {
           <UFormField
             label="Calling code"
             name="defaultCountryCode"
-            description="Filled in when a number has no country code."
+            description="Default country code applied to phone numbers entered without one."
           >
             <UInput
               v-model="state.defaultCountryCode"
@@ -183,8 +183,8 @@ async function join() {
     </UPageCard>
 
     <UPageCard
-      title="Join with a link"
-      description="Paste the link you were sent. Their settings may still make an admin let you in."
+      title="Join with an invite link"
+      description="Paste the invitation link you were sent. Administrator approval may still be required based on organization settings."
       variant="subtle"
     >
       <form

@@ -159,8 +159,8 @@ async function submit() {
       <template #body>
         <UAlert
           v-if="error"
-          title="Couldn't load the settings"
-          :description="getErrorReasons(error)[0] ?? 'Try again in a moment.'"
+          title="Unable to load settings"
+          :description="getErrorReasons(error)[0] ?? 'Please try again in a moment.'"
           color="error"
           variant="subtle"
           icon="i-lucide-circle-alert"
@@ -202,7 +202,7 @@ async function submit() {
 
             <UFormField
               label="Address"
-              description="Can't be edited. Links to the organization already use it."
+              description="Cannot be edited. Links and integrations use this URL path."
             >
               <UInput
                 :model-value="path()"
@@ -216,7 +216,7 @@ async function submit() {
               <UFormField
                 label="Time zone"
                 name="timeZone"
-                description="New bookings use this zone. Ones already made stay at the same moment."
+                description="New bookings use this zone. Existing bookings remain anchored to their original times."
               >
                 <USelectMenu
                   v-model="state.timeZone"
@@ -228,7 +228,7 @@ async function submit() {
               <UFormField
                 label="Calling code"
                 name="defaultCountryCode"
-                description="Numbers typed without a country code get this one."
+                description="Phone numbers entered without a country code will use this by default."
               >
                 <UInput
                   v-model="state.defaultCountryCode"
@@ -250,7 +250,7 @@ async function submit() {
             <UFormField
               label="Shortest booking"
               name="slotMinutes"
-              description="Start and end times have to land on the step you pick here."
+              description="Booking start and end times must align with this interval."
             >
               <USelect
                 v-model="state.slotMinutes"
@@ -263,7 +263,7 @@ async function submit() {
             <UFormField
               name="requireApproval"
               label="An admin lets people in"
-              description="On, a link only asks to join. Off, opening the link adds them."
+              description="When enabled, members who use an invitation link require administrator approval before gaining access."
             >
               <USwitch
                 v-model="state.requireApproval"
@@ -275,7 +275,7 @@ async function submit() {
               v-if="settings?.legacyClaimEnabled"
               name="stopClaims"
               label="Stop claims from the previous version"
-              description="People from the previous version can still claim their place with the Telegram chat they used. Turn this on once they have. You can't turn it back off."
+              description="Allow members from the previous version to claim their account via Telegram. Turn this on once they have. You cannot turn it back off."
             >
               <USwitch
                 v-model="state.stopClaims"
@@ -316,8 +316,8 @@ async function submit() {
           <TenantCalendarConnection />
 
           <UPageCard
-            title="A copy of the data"
-            description="People and their phone numbers, every booking, and the history. Taking the file is written into that history."
+            title="Export data"
+            description="Download a complete JSON export of members, bookings, and audit history. This action is recorded in the audit log."
             variant="subtle"
             icon="i-lucide-download"
           >
@@ -333,7 +333,7 @@ async function submit() {
 
           <UPageCard
             title="Delete this organization"
-            description="Right away nobody can get in and the invite links stop. Some days later the organization and everything in it are deleted for good, and any admin can restore it until then."
+            description="Access will be suspended immediately and invitation links will stop working. The organization will be permanently deleted after a grace period, during which administrators can restore it."
             variant="subtle"
             icon="i-lucide-trash-2"
           >
@@ -350,7 +350,7 @@ async function submit() {
         <UModal
           v-model:open="deleting"
           title="Delete this organization?"
-          description="From now nobody can use it. Deletion for good comes after a while, and any admin can restore it before then."
+          description="Access will be disabled immediately. Permanent deletion occurs after a retention period, during which any administrator can restore the organization."
         >
           <template #body>
             <form

@@ -181,13 +181,13 @@ async function confirmDelete() {
       <template #body>
         <div class="max-w-3xl space-y-6">
           <p class="text-sm text-muted">
-            Leave a facility open to everyone, or keep it to units you name. Admins can book the restricted ones too.
+            Make facilities available to everyone or restrict them to specific units. Administrators can book all facilities.
           </p>
 
           <UAlert
             v-if="error"
-            title="Couldn't load the facilities"
-            :description="getErrorReasons(error)[0] ?? 'Try again in a moment.'"
+            title="Unable to load facilities"
+            :description="getErrorReasons(error)[0] ?? 'Please try again in a moment.'"
             color="error"
             variant="subtle"
             icon="i-lucide-circle-alert"
@@ -238,7 +238,7 @@ async function confirmDelete() {
                     {{ facility.name }}
                   </p>
                   <p class="truncate text-sm text-muted">
-                    Who can book it: {{ whoCanBook(facility) }}
+                    Access: {{ whoCanBook(facility) }}
                   </p>
                 </div>
                 <UButton
@@ -264,7 +264,7 @@ async function confirmDelete() {
 
         <UModal
           v-model:open="editing"
-          :title="editingId ? 'Change the facility' : 'Add a facility'"
+          :title="editingId ? 'Edit facility' : 'Add facility'"
         >
           <template #body>
             <UForm
@@ -297,7 +297,7 @@ async function confirmDelete() {
               <UFormField
                 label="Group"
                 name="group"
-                description="Shows as a heading in the lists, Indoor for example. Leave it blank and it sits under Other."
+                description="Category or section heading, such as 'Indoor' or 'Outdoor'. Defaults to 'Other' if left blank."
               >
                 <UInput
                   v-model="state.group"
@@ -317,7 +317,7 @@ async function confirmDelete() {
               <UFormField
                 name="availableToAll"
                 label="Everyone can book it"
-                description="Off keeps it to the units you pick. Admins can still book it."
+                description="When disabled, access is restricted to selected units. Administrators can always book."
               >
                 <USwitch
                   v-model="state.availableToAll"
@@ -329,7 +329,7 @@ async function confirmDelete() {
                 v-if="!state.availableToAll"
                 label="Units that can book it"
                 name="unitIds"
-                :description="unitItems.length ? undefined : 'There are no units yet, so only admins can book it. Add units first if someone else should have it.'"
+                :description="unitItems.length ? undefined : 'There are no units yet, so only admins can book it. Add units first if you want other members to book.'"
               >
                 <USelectMenu
                   v-model="state.unitIds"
@@ -362,8 +362,8 @@ async function confirmDelete() {
 
         <UModal
           v-model:open="deletingOpen"
-          :title="`Delete ${deleting?.name ?? 'the facility'}?`"
-          description="If anything has been booked on it, it stays, bookings included. With none, you can delete it."
+          :title="`Delete ${deleting?.name ?? 'facility'}?`"
+          description="Facilities with existing bookings cannot be deleted. If there are no bookings, the facility will be removed permanently."
         >
           <template #body>
             <UAlert

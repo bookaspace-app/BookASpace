@@ -46,9 +46,9 @@ const waitingCount = computed(() => (members.value ?? []).filter(m => m.status =
 
 const statusColor = { Active: 'success', Pending: 'warning', Unclaimed: 'neutral', Removed: 'error' } as const
 const statusHint: Record<Member['status'], string> = {
-  Active: 'Signed in',
-  Pending: 'Waiting to be let in',
-  Unclaimed: 'Added by phone. Joins when they sign in',
+  Active: 'Active',
+  Pending: 'Pending approval',
+  Unclaimed: 'Invited by phone. Automatically joins upon sign-in',
   Removed: 'Removed',
 }
 
@@ -221,7 +221,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
           <UAlert
             v-if="waitingCount"
             :title="waitingCount === 1 ? 'Somebody is waiting to be let in' : `${waitingCount} people are waiting to be let in`"
-            description="They came in on an invite link and can't see or book anything until you let them in."
+            description="They joined via an invitation link and require approval before they can view or book facilities."
             color="warning"
             variant="subtle"
             icon="i-lucide-hourglass"
@@ -229,8 +229,8 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
 
           <UAlert
             v-if="error"
-            title="Couldn't load the people"
-            :description="getErrorReasons(error)[0] ?? 'Try again in a moment.'"
+            title="Unable to load members"
+            :description="getErrorReasons(error)[0] ?? 'Please try again in a moment.'"
             color="error"
             variant="subtle"
             icon="i-lucide-circle-alert"
@@ -264,7 +264,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
             v-else-if="!matching.length && !error"
             class="py-6 text-center text-muted"
           >
-            {{ search.trim() ? 'Nobody matches.' : 'There is nobody yet. An invite link works, and so does adding a phone number.' }}
+            {{ search.trim() ? 'Nobody matches.' : 'There is nobody yet. Share an invite link or add members by their phone number.' }}
           </p>
 
           <ul
@@ -305,7 +305,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
                   />
                 </p>
                 <p class="truncate text-sm text-muted">
-                  {{ [member.phone, unitName(member.unitId)].filter(Boolean).join(' · ') || 'No phone or unit' }}
+                  {{ [member.phone, unitName(member.unitId)].filter(Boolean).join(' · ') || 'No phone or unit assigned' }}
                 </p>
               </div>
 
@@ -316,7 +316,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
                     size="sm"
                     :loading="busy === member.id && updating"
                     :aria-label="`Let ${member.displayName} in`"
-                    @click="setMembership(member, 'In', `${member.displayName} is in`)"
+                    @click="setMembership(member, 'In', `${member.displayName} approved`)"
                   />
                   <UButton
                     label="Turn away"
@@ -336,7 +336,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
                     variant="subtle"
                     :loading="busy === member.id && updating"
                     :aria-label="`Let ${member.displayName} back in`"
-                    @click="setMembership(member, 'In', `${member.displayName} is back in`)"
+                    @click="setMembership(member, 'In', `${member.displayName} restored`)"
                   />
                 </template>
 
@@ -363,8 +363,8 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
 
         <UModal
           v-model:open="editing"
-          :title="editingMember ? `Change ${editingMember.displayName}` : 'Add someone'"
-          :description="editingMember ? undefined : 'Signing in with this number adds them. An invite link is for when they should join without you entering a number.'"
+          :title="editingMember ? `Edit ${editingMember.displayName}` : 'Add member'"
+          :description="editingMember ? undefined : 'Members can also join directly via an invitation link without entering their phone number in advance.'"
         >
           <template #body>
             <UForm
@@ -398,7 +398,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
                 label="Phone number"
                 name="phone"
                 :required="phoneRequired"
-                description="+ and the country code, or a local number when it's this organization's country."
+                description="Include the country code (e.g. +65), or enter a local number for this organization's country."
               >
                 <UInput
                   v-model="state.phone"
@@ -437,7 +437,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
               <UFormField
                 label="Tell them about"
                 name="notificationScope"
-                description="Goes out on Telegram once they've connected it."
+                description="Notifications will be sent via Telegram once connected."
               >
                 <USelect
                   v-model="state.notificationScope"
@@ -468,7 +468,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
         <UModal
           v-model:open="removingOpen"
           :title="removing?.status === 'Pending' ? `Turn ${removing.displayName} away?` : `Remove ${removing?.displayName ?? 'them'}?`"
-          :description="removing?.status === 'Pending' ? 'No notice goes out. Another link lets them ask again.' : 'They lose access. Bookings stay, and Let back in is still there afterwards.'"
+          :description="removing?.status === 'Pending' ? 'No notification will be sent. The person can request to join again using an invitation link.' : 'They will lose access immediately. Existing bookings will be preserved, and access can be restored later.'"
         >
           <template #body>
             <UAlert
@@ -488,7 +488,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
                 @click="confirmRemove"
               />
               <UButton
-                label="Keep them"
+                label="Cancel"
                 color="neutral"
                 variant="ghost"
                 @click="removing = undefined"

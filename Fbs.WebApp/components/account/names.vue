@@ -33,7 +33,7 @@ const { mutateAsync: rename, isPending: saving } = usePutOrgMe()
 async function save(place: Place) {
   const displayName = changeTo.value.trim()
   if (displayName.length < 1 || displayName.length > 200) {
-    problem.value = 'The name has to be between 1 and 200 characters.'
+    problem.value = 'Name must be between 1 and 200 characters.'
     return
   }
 
@@ -45,7 +45,7 @@ async function save(place: Place) {
     toast.add({ title: `You're ${displayName} in ${place.tenantName}`, color: 'success' })
   }
   catch (e) {
-    problem.value = getFieldErrors(e)[0]?.message ?? getErrorReasons(e)[0] ?? 'Couldn\'t change it. Try again.'
+    problem.value = getFieldErrors(e)[0]?.message ?? getErrorReasons(e)[0] ?? 'Unable to update name. Please try again.'
   }
 }
 </script>
@@ -53,7 +53,7 @@ async function save(place: Place) {
 <template>
   <UPageCard
     title="Your name in each organization"
-    description="What people in an organization see on your bookings. Each one has its own: a name that's the same as the one on your account changes when that does, and one that's different stays as it is."
+    description="Customize how your name appears in each organization. By default, it matches your account name."
     variant="subtle"
     icon="i-lucide-id-card"
   >

@@ -25,7 +25,7 @@ function validate(): FormError[] {
   const errors: FormError[] = []
 
   if (otp.value.length !== 6) {
-    errors.push({ name: 'otp', message: 'The code needs 6 digits.' })
+    errors.push({ name: 'otp', message: 'Please enter the 6-digit code.' })
   }
 
   return errors
@@ -33,7 +33,7 @@ function validate(): FormError[] {
 
 function onFormError() {
   toast.add({
-    title: 'The code needs 6 digits.',
+    title: 'Please enter the 6-digit code.',
     color: 'error',
     icon: 'i-lucide-circle-x',
     duration: 3000,
@@ -46,7 +46,7 @@ function onFormSubmit() {
       const e = getProblemDetails(error)
       for (const error of e?.errors ?? []) {
         toast.add({
-          title: error.reason ?? 'Couldn\'t check the code',
+          title: error.reason ?? 'Unable to verify code',
           color: 'error',
           icon: 'i-lucide-circle-x',
           duration: 3000,
@@ -56,7 +56,7 @@ function onFormSubmit() {
       // The API rejects a wrong or expired OTP with a bare 401
       if (!e?.errors?.length) {
         toast.add({
-          title: 'The OTP is invalid or has expired.',
+          title: 'The code is invalid or has expired.',
           color: 'error',
           icon: 'i-lucide-circle-x',
           duration: 3000,
@@ -77,10 +77,10 @@ function onFormSubmit() {
         <div class="flex flex-col items-start gap-3">
           <div class="space-y-1.5">
             <h1 class="text-2xl font-semibold text-highlighted">
-              Verify your OTP
+              Enter verification code
             </h1>
             <p class="text-sm text-muted">
-              Enter the OTP sent to your Telegram account
+              Enter the 6-digit code sent to your Telegram account
             </p>
           </div>
 

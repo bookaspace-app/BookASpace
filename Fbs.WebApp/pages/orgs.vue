@@ -28,7 +28,7 @@ function remember(place: { tenantSlug: string, status: string, tenantStatus: str
   <div class="space-y-6">
     <UPageCard
       title="Your organizations"
-      description="Open the organization you're booking in. Making one, or joining with a link, is on this page too."
+      description="Select an organization to manage or view bookings. You can also create a new organization or join with an invite link below."
       variant="naked"
     />
 
@@ -52,7 +52,7 @@ function remember(place: { tenantSlug: string, status: string, tenantStatus: str
           v-for="place in places"
           :key="place.tenantSlug"
           :title="place.tenantName"
-          :description="place.status !== 'Active' ? 'Waiting for an admin to let you in' : place.tenantStatus === 'PendingDeletion' ? `To be deleted${deletedOn(place.deleteAfter) ? `, on ${deletedOn(place.deleteAfter)} at the earliest` : ''}` : place.tenantStatus === 'Suspended' ? 'Paused' : `You're ${place.role === 'Admin' ? 'an admin' : 'a member'} here, as ${place.displayName}`"
+          :description="place.status !== 'Active' ? 'Pending administrator approval' : place.tenantStatus === 'PendingDeletion' ? `To be deleted${deletedOn(place.deleteAfter) ? `, on ${deletedOn(place.deleteAfter)} at the earliest` : ''}` : place.tenantStatus === 'Suspended' ? 'Suspended' : `${place.role === 'Admin' ? 'Administrator' : 'Member'} · ${place.displayName}`"
           :to="leadsSomewhere(place) ? `/t/${place.tenantSlug}` : undefined"
           variant="subtle"
           icon="i-lucide-building-2"
@@ -73,7 +73,7 @@ function remember(place: { tenantSlug: string, status: string, tenantStatus: str
             />
             <UBadge
               v-else-if="place.tenantStatus === 'Suspended'"
-              label="Paused"
+              label="Suspended"
               color="neutral"
               variant="subtle"
             />
@@ -88,8 +88,8 @@ function remember(place: { tenantSlug: string, status: string, tenantStatus: str
 
       <UAlert
         v-else
-        title="You aren't in an organization yet"
-        description="Start one for your unit or club, or open a link from someone who's already in one."
+        title="You have not joined any organizations yet"
+        description="Create a new organization for your team, or join an existing one using an invitation link."
         color="neutral"
         variant="subtle"
         icon="i-lucide-info"
@@ -98,7 +98,7 @@ function remember(place: { tenantSlug: string, status: string, tenantStatus: str
       <div class="flex flex-wrap gap-2">
         <UButton
           to="/onboarding"
-          label="Make an organization or join one"
+          label="Create or join an organization"
           icon="i-lucide-plus"
         />
       </div>

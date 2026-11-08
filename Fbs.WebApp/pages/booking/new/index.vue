@@ -144,7 +144,7 @@ const basketClashCount = computed(() => basketClashes.value.filter(Boolean).leng
 
 const clashMessages: Record<SlotClash['kind'], string> = {
   past: 'This time has already passed',
-  existing: 'Clashes with an existing booking',
+  existing: 'Conflicts with an existing booking',
   selection: 'Overlaps a slot in your list',
 }
 
@@ -203,7 +203,7 @@ function selectWholeDay() {
 
   const { start, end } = wholeDay(selection.value.start)
   if (end <= start) {
-    toast.add({ title: 'This day is almost over.', description: 'Pick a later day to book it whole.', color: 'warning', icon: 'i-lucide-triangle-alert', duration: 3000 })
+    toast.add({ title: 'Cannot select full day', description: 'This day has already ended. Please select a future date to book the entire day.', color: 'warning', icon: 'i-lucide-triangle-alert', duration: 3000 })
     return
   }
 
@@ -584,7 +584,7 @@ function onViewChange({ start, id }) {
             v-else
             class="text-muted"
           >
-            {{ basket.slots.value.length ? 'Pick another slot, or continue with your list.' : 'No time slot selected yet.' }}
+            {{ basket.slots.value.length ? 'Select another slot, or continue with your list.' : 'No time slot selected yet.' }}
           </p>
         </div>
 
