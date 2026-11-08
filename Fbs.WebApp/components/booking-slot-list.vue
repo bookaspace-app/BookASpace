@@ -27,15 +27,15 @@ function problem(index: number) {
   const clash = props.clashes[index]
   if (!clash) return props.errors[index]
   if (clash.kind === 'past') {
-    return 'This time has already passed'
+    return 'This time slot has already passed'
   }
   if (clash.kind === 'existing') {
     const who = [clash.booking.user?.unit, clash.booking.conduct].filter(Boolean).join(' / ')
-    return `Clashes with ${who || 'an existing booking'}`
+    return `Conflicts with ${who || 'an existing booking'}`
   }
   return clash.index < props.offset
-    ? 'Overlaps a slot already in your list'
-    : `Overlaps slot ${clash.index - props.offset + 1}`
+    ? 'Conflicts with a slot already in your list'
+    : `Conflicts with slot ${clash.index - props.offset + 1}`
 }
 </script>
 

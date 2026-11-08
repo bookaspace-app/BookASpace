@@ -19,7 +19,7 @@ const steps = computed(() => [
   {
     id: 'facilities',
     title: 'Add facilities',
-    description: 'A hall, a field, that sort of place. Each one can be open to everyone or kept to some units.',
+    description: 'Add rooms, courts, halls, or fields. Each facility can be made public or restricted to specific units.',
     done: (facilities.value?.length ?? 0) > 0,
     to: path('admin', 'facilities'),
     action: 'Add facilities',
@@ -27,7 +27,7 @@ const steps = computed(() => [
   {
     id: 'units',
     title: 'Add your units',
-    description: 'Optional. A platoon or a team. A facility can be limited to one, and people in it can change each other\'s bookings.',
+    description: 'Optional. Group members into teams or departments to control access to restricted facilities.',
     done: (units.value?.length ?? 0) > 0,
     to: path('admin', 'units'),
     action: 'Add units',
@@ -36,7 +36,7 @@ const steps = computed(() => [
   {
     id: 'people',
     title: 'Invite people',
-    description: 'A link for whoever should book. Typing their phone number on the people page works too.',
+    description: 'Share an invite link with your members or add them directly by phone number.',
     done: (invites.value?.length ?? 0) > 0 || (members.value?.length ?? 0) > 1,
     to: path('admin', 'invites'),
     action: 'Make a link',
@@ -60,7 +60,7 @@ function hide() {
   >
     <UPageCard
       title="Set up your organization"
-      description="Still to do before anyone else can book."
+      description="Recommended steps to get your organization ready for bookings."
       variant="subtle"
     >
       <ol class="space-y-3">

@@ -25,7 +25,7 @@ const emit = defineEmits<{
 const { df, tf, timeZone } = useTenantFormatter()
 
 const names = computed(() => new Map(props.facilities.map(f => [f.id, f.name])))
-const nameOf = (slot: { facilityId: string }) => names.value.get(slot.facilityId) ?? 'A facility that is gone'
+const nameOf = (slot: { facilityId: string }) => names.value.get(slot.facilityId) ?? 'Unavailable facility'
 const describe = (slot: { start: Date, end: Date }) => describeSlot(slot, df.value, tf.value, timeZone.value)
 
 // Prefer what we know here, which names who holds the slot, over the API's message
@@ -36,15 +36,15 @@ function problem(index: number) {
   }
 
   if (clash.kind === 'past') {
-    return 'This time has already passed'
+    return 'This time slot has already passed'
   }
 
   if (clash.kind === 'existing') {
     const who = [clash.booking.bookedBy?.displayName, clash.booking.conduct].filter(Boolean).join(' / ')
-    return `Clashes with ${who || 'an existing booking'}`
+    return `Conflicts with ${who || 'an existing booking'}`
   }
 
-  return clash.index < props.offset ? 'Overlaps a slot already in your list' : `Overlaps slot ${clash.index - props.offset + 1}`
+  return clash.index < props.offset ? 'Conflicts with a slot already in your list' : `Conflicts with slot ${clash.index - props.offset + 1}`
 }
 </script>
 

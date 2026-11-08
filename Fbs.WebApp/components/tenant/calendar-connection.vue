@@ -119,7 +119,7 @@ async function stop() {
     toast.add({ title: 'Stopped copying to the calendar', color: 'success' })
   }
   catch (e) {
-    toast.add({ title: 'Couldn\'t stop copying', description: getErrorReasons(e)[0] ?? 'Try again in a moment.', color: 'error' })
+    toast.add({ title: 'Could not disconnect calendar', description: getErrorReasons(e)[0] ?? 'Try again in a moment.', color: 'error' })
   }
   finally {
     stopping.value = false
@@ -130,13 +130,13 @@ async function stop() {
 <template>
   <UPageCard
     title="Google Calendar"
-    description="Bookings are copied onto a Google Calendar, and edits there are not brought back."
+    description="Automatically sync bookings to an external Google Calendar. Changes made directly in Google Calendar will not sync back."
     variant="subtle"
     icon="i-lucide-calendar"
   >
     <UAlert
       v-if="error"
-      title="Couldn't load the calendar"
+      title="Failed to load calendar settings"
       :description="getErrorReasons(error)[0] ?? 'Try again in a moment.'"
       color="error"
       variant="subtle"
@@ -151,7 +151,7 @@ async function stop() {
         name="i-lucide-loader-circle"
         class="size-4 animate-spin"
       />
-      Loading the calendar
+      Loading calendar settings...
     </div>
 
     <div
@@ -160,8 +160,8 @@ async function stop() {
     >
       <UAlert
         v-if="calendar.status === 'Failed'"
-        title="Copying has stopped"
-        :description="calendar.lastError || 'Google Calendar refused it. Connect it again once it is shared.'"
+        title="Sync paused"
+        :description="calendar.lastError || 'Google Calendar sync failed. Please verify sharing permissions and reconnect.'"
         color="error"
         variant="subtle"
         icon="i-lucide-circle-alert"
@@ -172,7 +172,7 @@ async function stop() {
         class="space-y-3"
       >
         <p class="text-sm">
-          Bookings are copied to <span class="font-medium">{{ calendar.calendarId }}</span>.
+          Bookings are synced to <span class="font-medium">{{ calendar.calendarId }}</span>.
         </p>
         <UButton
           label="Stop copying"
@@ -183,7 +183,7 @@ async function stop() {
           @click="stop"
         />
         <p class="text-sm text-muted">
-          Events already on the calendar stay there.
+          Previously synced events will remain on your Google Calendar.
         </p>
       </div>
 
@@ -196,9 +196,9 @@ async function stop() {
         @submit="submitCode"
       >
         <p class="text-sm">
-          An event whose name starts with Fbs is on <span class="font-medium">{{ calendar.calendarId }}</span>, and the code is in that name.
+          A verification event starting with "Fbs" has been created in <span class="font-medium">{{ calendar.calendarId }}</span>. Enter the verification code found in its title.
           <template v-if="until(calendar.verificationExpiresAt)">
-            It works until {{ until(calendar.verificationExpiresAt) }}.
+            Code expires {{ until(calendar.verificationExpiresAt) }}.
           </template>
         </p>
         <UFormField
@@ -252,18 +252,18 @@ async function stop() {
           v-if="calendar.serviceAccountEmail"
           class="text-sm text-muted"
         >
-          Share the calendar with <span class="text-default">{{ calendar.serviceAccountEmail }}</span>, and let that account change events.
+          Share your Google Calendar with <span class="text-default">{{ calendar.serviceAccountEmail }}</span> and grant permission to "Make changes to events".
         </p>
         <p
           v-else
           class="text-sm text-muted"
         >
-          Share the calendar with the service account this app uses, and let that account change events.
+          Share your Google Calendar with the application service account and grant permission to "Make changes to events".
         </p>
         <UFormField
           label="Calendar id"
           name="calendarId"
-          description="In Google Calendar, open the calendar's settings and copy Calendar ID. It often ends in @group.calendar.google.com."
+          description="In Google Calendar settings, copy the Calendar ID under 'Integrate calendar'. It usually ends with @group.calendar.google.com."
           required
         >
           <UInput
@@ -283,7 +283,7 @@ async function stop() {
           <UButton
             v-if="calendar.status === 'Pending'"
             type="button"
-            label="Back to the code"
+            label="Back to verification"
             color="neutral"
             variant="ghost"
             :disabled="starting"

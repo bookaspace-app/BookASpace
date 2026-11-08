@@ -77,7 +77,7 @@ function add() {
   <USlideover
     v-model:open="open"
     title="Book multiple facilities or days"
-    description="One conduct and one point of contact for the lot. You fill those in next."
+    description="Reserve multiple slots at once with a shared event name and point of contact."
     :ui="{ content: 'max-w-lg', body: 'space-y-6' }"
   >
     <template #body>
@@ -163,14 +163,14 @@ function add() {
           <span
             v-if="clashCount"
             class="text-xs text-error"
-          >{{ clashCount === 1 ? '1 slot clashes' : `${clashCount} slots clash` }}</span>
+          >{{ clashCount === 1 ? '1 conflicting slot' : `${clashCount} conflicting slots` }}</span>
         </div>
 
         <p
           v-if="!preview.length"
           class="text-sm text-muted"
         >
-          Pick a facility and a day to see what would be booked.
+          Select at least one facility and date to preview slots.
         </p>
 
         <BookingSlotList
@@ -185,7 +185,7 @@ function add() {
           v-if="plan.skipped"
           class="text-xs text-muted"
         >
-          {{ plan.skipped }} {{ plan.skipped === 1 ? 'slot is' : 'slots are' }} in the past and left out.
+          {{ plan.skipped }} {{ plan.skipped === 1 ? 'past slot was' : 'past slots were' }} excluded.
         </p>
 
         <UAlert
@@ -193,8 +193,8 @@ function add() {
           color="warning"
           variant="subtle"
           icon="i-lucide-triangle-alert"
-          :title="`You can book up to ${MAX_BATCH_SLOTS} slots at a time.`"
-          :description="basket.slots.value.length ? `Your list already has ${basket.slots.value.length}.` : undefined"
+          :title="`You can book up to ${MAX_BATCH_SLOTS} slots per booking.`"
+          :description="basket.slots.value.length ? `You already have ${basket.slots.value.length} selected in your list.` : undefined"
         />
       </div>
     </template>

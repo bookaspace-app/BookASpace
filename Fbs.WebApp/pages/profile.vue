@@ -8,10 +8,10 @@ definePageMeta({
 const { data: me } = useGetAuthMe()
 
 const fields = computed(() => [
-  { label: 'Rank / Name', description: 'The name the booking bot has', value: me.value?.name },
-  { label: 'Phone', description: 'Shown with the country code', value: me.value?.phone },
-  { label: 'Telegram ID', description: 'The chat id Telegram uses internally', value: me.value?.telegramChatId },
-  { label: 'Notification group', description: 'Where your notices are sent', value: me.value?.notificationGroup },
+  { label: 'Rank / Name', description: 'Your display name in the system', value: me.value?.name },
+  { label: 'Phone', description: 'Phone number including country code', value: me.value?.phone },
+  { label: 'Telegram ID', description: 'Your unique Telegram user or chat ID', value: me.value?.telegramChatId },
+  { label: 'Notification group', description: 'Channel or group where booking notifications are sent', value: me.value?.notificationGroup },
 ])
 </script>
 
@@ -25,7 +25,7 @@ const fields = computed(() => [
       <div class="w-full lg:max-w-2xl mx-auto">
         <UPageCard
           title="Profile"
-          description="What the booking bot has stored for you."
+          description="Your profile information and linked notification settings."
           variant="naked"
           class="mb-4"
         />

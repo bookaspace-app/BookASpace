@@ -117,7 +117,7 @@ const adminTools = [
   },
   {
     title: 'Invite links with approval',
-    description: 'People join with a link, straight away or once an admin lets them in.',
+    description: 'People join with a link, instantly or once an admin approves them.',
     icon: 'i-lucide-link',
   },
   {
@@ -199,7 +199,7 @@ const faqs = [
   },
   {
     label: 'What kinds of facilities can I manage?',
-    content: 'Anything that is booked by the hour: meeting rooms, classrooms, sports courts, halls, labs, studios, training areas and more. Facilities are grouped by type, and you choose the shortest booking you allow.',
+    content: 'Anything that is booked by the hour: meeting rooms, classrooms, sports courts, halls, labs, studios, training areas and more. Facilities are grouped by type, and you can customize time slot durations and intervals.',
   },
   {
     label: 'How does Book A Space prevent double bookings?',
@@ -207,7 +207,7 @@ const faqs = [
   },
   {
     label: 'How do people join my organization?',
-    content: 'Share an invite link. You can let people in straight away or approve each of them first, and admins can also add people by their phone number.',
+    content: 'Share an invite link. You can allow immediate joins or require administrator approval, and admins can also add members directly by phone number.',
   },
   {
     label: 'Does it work on my phone?',
@@ -219,7 +219,7 @@ const faqs = [
   },
   {
     label: 'Can I get my data out?',
-    content: 'Yes. Admins can download a copy of their organization\'s data at any time, and everybody can download what is kept about them.',
+    content: 'Yes. Admins can export organization data at any time, and members can download their own personal account information.',
   },
 ]
 
@@ -675,12 +675,12 @@ useHead({
                     Jordan Ong
                   </p>
                   <p class="truncate text-xs text-muted">
-                    Asked to join · Drama
+                    Requested to join · Drama
                   </p>
                 </div>
                 <div class="flex gap-2 text-xs font-medium">
                   <span class="rounded-md px-2.5 py-1 text-muted ring ring-default">Decline</span>
-                  <span class="rounded-md bg-primary px-2.5 py-1 text-inverted">Let in</span>
+                  <span class="rounded-md bg-primary px-2.5 py-1 text-inverted">Approve</span>
                 </div>
               </li>
             </ul>
@@ -750,7 +750,7 @@ useHead({
             Frequently asked questions
           </h2>
           <p class="mt-4 text-lg text-muted text-pretty">
-            What people ask before they bring their facilities to Book A Space.
+            Common questions about setting up and using Book A Space.
           </p>
         </div>
 

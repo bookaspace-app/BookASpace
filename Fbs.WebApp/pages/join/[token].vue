@@ -64,7 +64,7 @@ async function join() {
     <UAlert
       v-if="full"
       title="This organization is full"
-      description="It's at the people limit. An admin has to free a place before this link will work."
+      description="The organization has reached its maximum member limit. An administrator must free up a spot before new members can join."
       color="warning"
       variant="subtle"
       icon="i-lucide-users-round"
@@ -73,13 +73,13 @@ async function join() {
     <UPageCard
       v-if="outcome"
       :title="`You asked to join ${outcome.name}`"
-      description="An admin has to let you in before you can use it. Leaving and coming back to this page is fine."
+      description="An administrator must approve your request before you can access the organization. You may safely navigate away while waiting."
       variant="subtle"
       icon="i-lucide-hourglass"
     >
       <UButton
         to="/orgs"
-        label="Your organizations"
+        label="Back to organizations"
         color="neutral"
         variant="subtle"
       />
@@ -87,8 +87,8 @@ async function join() {
 
     <UAlert
       v-else-if="removed"
-      title="An admin removed you from this organization"
-      description="Only an admin can let you back in."
+      title="You have been removed from this organization"
+      description="Please contact an organization administrator to restore your access."
       color="warning"
       variant="subtle"
       icon="i-lucide-triangle-alert"
@@ -104,13 +104,13 @@ async function join() {
     <UPageCard
       v-else-if="error || !invite"
       title="This link doesn't work"
-      description="It expired, ran out of uses, or somebody stopped it. Ask whoever sent it for another."
+      description="This invitation link has expired, reached its usage limit, or been revoked. Please ask an administrator for a new link."
       variant="subtle"
       icon="i-lucide-link-2-off"
     >
       <UButton
         to="/onboarding"
-        label="Make an organization instead"
+        label="Create an organization instead"
         color="neutral"
         variant="subtle"
       />
@@ -119,7 +119,7 @@ async function join() {
     <UPageCard
       v-else
       :title="`Join ${invite.organizationName}`"
-      :description="invite.requiresApproval ? 'After you ask, an admin lets you in.' : 'This adds you to the organization.'"
+      :description="invite.requiresApproval ? 'Your request will be sent to an administrator for approval.' : 'Accepting this invitation will add you to the organization.'"
       variant="subtle"
       icon="i-lucide-user-plus"
     >
@@ -129,7 +129,7 @@ async function join() {
       >
         <UFormField
           label="Your name"
-          description="What people in it see, such as your rank and name. Left as the name on your account, it changes when that does."
+          description="How your name appears to other members. If left unchanged, it defaults to your account name."
         >
           <UInput
             v-model="displayName"

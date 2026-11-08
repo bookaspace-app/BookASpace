@@ -122,13 +122,13 @@ async function confirmDelete() {
       <template #body>
         <div class="max-w-2xl space-y-6">
           <p class="text-sm text-muted">
-            A platoon or a team. Membership decides which facilities those people can book, and they can change each other's bookings.
+            Organize members into teams or departments. Unit membership determines facility access, and unit members can manage each other's bookings.
           </p>
 
           <UAlert
             v-if="error"
-            title="Couldn't load the units"
-            :description="getErrorReasons(error)[0] ?? 'Try again in a moment.'"
+            title="Unable to load units"
+            :description="getErrorReasons(error)[0] ?? 'Please try again in a moment.'"
             color="error"
             variant="subtle"
             icon="i-lucide-circle-alert"
@@ -177,7 +177,7 @@ async function confirmDelete() {
             v-else-if="!sorted.length && !error"
             class="text-center text-muted"
           >
-            There are no units yet, and you can leave it that way. People then have no unit, and a facility that isn't open to everyone can only be booked by an admin.
+            There are no units yet, and you can leave it that way. Members will not belong to any unit, and restricted facilities can only be booked by administrators.
           </p>
 
           <ul
@@ -245,8 +245,8 @@ async function confirmDelete() {
 
         <UModal
           v-model:open="deletingOpen"
-          :title="`Delete ${deleting?.name ?? 'the unit'}?`"
-          description="It has to be empty first: no people in it, and no bookings."
+          :title="`Delete ${deleting?.name ?? 'unit'}?`"
+          description="A unit must be empty before it can be deleted. Please reassign any members and remove existing bookings first."
         >
           <template #body>
             <UAlert

@@ -19,7 +19,7 @@ function hide() {
   >
     <UPageCard
       title="New here?"
-      description="Booking is done on a calendar, by dragging out a time. See how in a minute, or have the booking page walk you through it."
+      description="Select and drag time slots directly on the calendar to book facilities. Take a quick interactive tour to get started."
       icon="i-lucide-sparkles"
       variant="subtle"
     >

@@ -64,7 +64,7 @@ const links = computed<NavigationMenuItem[][]>(() => [
       onSelect: close,
     },
     {
-      label: 'jialat liao',
+      label: 'Support & helpline',
       icon: 'i-lucide-life-buoy',
       to: 'https://www.cmpb.gov.sg/life-in-ns/saf/where-to-seek-help/',
       target: '_blank',

@@ -65,13 +65,13 @@ const iconOf = (entry: Entry) => icons[entry.action.split('.')[0] ?? ''] ?? 'i-l
       <template #body>
         <div class="max-w-3xl space-y-4">
           <p class="text-sm text-muted">
-            Settings, units, facilities, invite links and people, newest at the top. Bookings are on the bookings page.
+            Audit trail for settings, units, facilities, invite links, and members, ordered newest first. Booking activity can be viewed on the bookings page.
           </p>
 
           <UAlert
             v-if="error"
             title="Couldn't load the history"
-            :description="getErrorReasons(error)[0] ?? 'Try again in a moment.'"
+            :description="getErrorReasons(error)[0] ?? 'Please try again in a moment.'"
             color="error"
             variant="subtle"
             icon="i-lucide-circle-alert"

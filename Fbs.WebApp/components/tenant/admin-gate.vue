@@ -15,11 +15,11 @@ const { isAdmin, path } = useTenant()
       variant="subtle"
       icon="i-lucide-shield-alert"
       title="Only admins can do this"
-      description="An admin here has to make the change, or make you an admin first."
+      description="You need administrator privileges to view or make changes to this page."
     >
       <UButton
         :to="path()"
-        label="Back to the bookings"
+        label="Back to bookings"
         color="neutral"
         variant="subtle"
       />

@@ -116,15 +116,15 @@ const rescheduleProblem = computed(() => {
 const rescheduleError = computed(() => {
   const problem = rescheduleProblem.value
   switch (problem?.kind) {
-    case 'over': return 'This booking is over, so its time can no longer be changed.'
+    case 'over': return 'This booking has ended and its time can no longer be changed.'
     case 'started': return 'This booking has started, so only its end time can be changed.'
     case 'past': return 'The new time slot must be in the future.'
-    case 'order': return 'End must be after the start.'
+    case 'order': return 'End time must be after the start time.'
     case 'interval': return 'Times must be on the hour or half hour.'
     case 'existing': {
       const other = problem.booking
       const by = other.user?.unit ? ` (${other.user.unit})` : ''
-      return `Clashes with "${other.conduct}"${by}, ${describeRange(other.startDateTime, other.endDateTime)}.`
+      return `Conflicts with "${other.conduct}"${by}, ${describeRange(other.startDateTime, other.endDateTime)}.`
     }
     default: return undefined
   }
@@ -140,7 +140,7 @@ function describeRange(start?: Date | null, end?: Date | null) {
 
 const timeSlotHelp = computed(() => {
   if (!isOwnBooking.value) return undefined
-  if (isOver.value) return 'This booking is over, so its time can no longer be changed.'
+  if (isOver.value) return 'This booking has ended and its time can no longer be changed.'
   if (hasStarted.value) return 'This booking has started, so only its end time can be changed.'
   return undefined
 })
@@ -195,7 +195,7 @@ function deleteBooking() {
       await navigateTo('/booking')
     },
     onError(error) {
-      showError('Couldn\'t cancel the booking.', error)
+      showError('Failed to cancel the booking.', error)
     },
   })
 }
@@ -223,7 +223,7 @@ function updateBooking() {
       })
     },
     onError(error) {
-      showError('Couldn\'t update the booking.', error)
+      showError('Failed to update the booking.', error)
     },
   })
 }
@@ -270,7 +270,7 @@ function updateBooking() {
               color="error"
               variant="subtle"
               icon="i-lucide-triangle-alert"
-              title="This is permanent and most definitely will result in pain and suffering if unintended!"
+              title="Cancellation is permanent and cannot be undone."
             />
             <p
               v-if="!isOwnBooking && booking?.user?.name"

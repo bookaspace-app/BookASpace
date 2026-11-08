@@ -30,7 +30,7 @@ async function connect() {
     window.open(link.url, '_blank', 'noopener')
   }
   catch (error) {
-    toast.add({ title: getErrorStatus(error) === 429 ? 'Too many tries' : 'Couldn\'t make the link', description: 'Wait a little, then try again.', color: 'error' })
+    toast.add({ title: getErrorStatus(error) === 429 ? 'Too many attempts' : 'Could not generate link', description: 'Please wait a moment and try again.', color: 'error' })
   }
 }
 
@@ -50,8 +50,8 @@ async function downloadMyData() {
   }
   catch (error) {
     toast.add({
-      title: getErrorStatus(error) === 429 ? 'Too many tries' : 'Couldn\'t get your data',
-      description: getErrorStatus(error) === 429 ? 'Wait a little, then try again.' : 'Try again in a moment.',
+      title: getErrorStatus(error) === 429 ? 'Too many attempts' : 'Failed to export data',
+      description: getErrorStatus(error) === 429 ? 'Please wait a moment and try again.' : 'Please try again in a moment.',
       color: 'error',
     })
   }
@@ -61,7 +61,7 @@ async function downloadMyData() {
 }
 
 const fields = computed(() => [
-  { label: 'Name', description: 'The name on your account, which organizations call you by unless it\'s changed there', value: me.value?.name },
+  { label: 'Name', description: 'Your default account name, used unless overridden within specific organizations', value: me.value?.name },
   { label: 'Email', description: 'The email you sign in with', value: me.value?.email },
 ])
 </script>
@@ -70,7 +70,7 @@ const fields = computed(() => [
   <div class="space-y-6">
     <UPageCard
       title="Your account"
-      description="What you sign in with. One account covers every organization you belong to."
+      description="Manage your account profile, data export, and external integrations."
       variant="naked"
     />
 
@@ -114,7 +114,7 @@ const fields = computed(() => [
 
     <UPageCard
       title="Your data"
-      description="Your account, the organizations you belong to, and your bookings."
+      description="Export a copy of your account profile, organization memberships, and booking history."
       variant="subtle"
       icon="i-lucide-download"
     >
@@ -130,7 +130,7 @@ const fields = computed(() => [
 
     <UPageCard
       title="Telegram"
-      description="Booking notices for every organization you're in. Sign-in stays on the account, not Telegram."
+      description="Receive booking updates across all your organizations on Telegram."
       variant="subtle"
       icon="i-simple-icons-telegram"
     >
@@ -173,7 +173,7 @@ const fields = computed(() => [
           v-if="connecting"
           class="text-sm text-muted"
         >
-          Press Start in Telegram. The connection shows up here once the bot answers.
+          Press Start in Telegram to connect your account. This page will update automatically.
         </p>
       </div>
     </UPageCard>

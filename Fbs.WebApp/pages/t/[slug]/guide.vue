@@ -18,25 +18,25 @@ const walkthrough = computed(() => ({ path: path('book'), state: { tour: true } 
 const afterwards = computed(() => [
   {
     title: 'Bookings',
-    description: 'Every booking here, the latest first. Turn on Only mine to see just yours.',
+    description: 'View all organization bookings, newest first. Filter by "Only mine" to see your own bookings.',
     icon: 'i-lucide-calendar-days',
     to: path(),
   },
   {
     title: 'Timeline',
-    description: 'A row for each facility over a few days, to see when they are free.',
+    description: 'Visual overview of facility availability across multiple days.',
     icon: 'i-lucide-chart-gantt',
     to: path('timeline'),
   },
   {
     title: 'Changing or cancelling',
-    description: 'Open a booking from the list, or double-click it on the calendar. You can change or cancel yours, and your unit\'s.',
+    description: 'Open a booking from the list or double-click it on the calendar to view, modify, or cancel it.',
     icon: 'i-lucide-pencil',
     to: path(),
   },
   {
     title: 'Telegram',
-    description: 'Hear about bookings there. Connect it from your account.',
+    description: 'Receive instant booking notifications on Telegram. Connect your account in settings.',
     icon: 'i-simple-icons-telegram',
     to: '/account',
   },
@@ -53,7 +53,7 @@ const afterwards = computed(() => [
       <div class="mx-auto w-full max-w-3xl space-y-8">
         <UPageCard
           :title="`Booking at ${org?.name ?? 'your organization'}`"
-          description="It takes a minute. This is how it goes, or try it for real: nothing is booked until you confirm, so you can't get it wrong."
+          description="Learn how to reserve facilities in just a few simple steps. Nothing is booked until you confirm, so feel free to explore."
           variant="subtle"
         >
           <div class="flex flex-wrap gap-2">
@@ -172,11 +172,10 @@ const afterwards = computed(() => [
             <span class="step__number">5</span>
             <div class="min-w-0 flex-1">
               <h2 class="step__title">
-                More than one? Make a list
+                Booking multiple slots? Add to list
               </h2>
               <p class="step__text">
-                <strong>Add to list</strong> keeps what you picked, so you can pick another. <strong>Book multiple</strong> does several facilities
-                or days at once. Everything in the list is booked together, with one conduct and one point of contact.
+                Click <strong>Add to list</strong> to stage your current selection. You can also use <strong>Book multiple</strong> to select several facilities or dates at once. Staged slots are submitted together under a single conduct and point of contact.
               </p>
             </div>
           </li>
@@ -188,8 +187,7 @@ const afterwards = computed(() => [
                 Confirm
               </h2>
               <p class="step__text">
-                Say what it's for and who to contact, then press <strong>Confirm</strong>. If anything in your list clashes with another booking,
-                nothing is booked: take out what clashes and try again.
+                Enter the event details and point of contact, then click <strong>Confirm</strong>. If any slot conflicts with an existing booking, the batch will not proceed until conflicting slots are removed.
               </p>
             </div>
           </li>
@@ -220,7 +218,7 @@ const afterwards = computed(() => [
 
         <div class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-default p-4">
           <p class="text-sm text-muted">
-            Ready? The walkthrough asks you to pick a time on the real calendar.
+            Ready to start? Launch the interactive walkthrough to try it on the calendar.
           </p>
           <UButton
             :to="walkthrough"
