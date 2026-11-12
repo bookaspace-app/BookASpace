@@ -45,7 +45,7 @@ async function save(place: Place) {
     toast.add({ title: `You're ${displayName} in ${place.tenantName}`, color: 'success' })
   }
   catch (e) {
-    problem.value = getFieldErrors(e)[0]?.message ?? getErrorReasons(e)[0] ?? 'Unable to update name. Please try again.'
+    problem.value = getFieldErrors(e)[0]?.message ?? getErrorReasons(e)[0] ?? 'Couldn\'t update name. Try again.'
   }
 }
 </script>
@@ -53,7 +53,7 @@ async function save(place: Place) {
 <template>
   <UPageCard
     title="Your name in each organization"
-    description="Customize how your name appears in each organization. By default, it matches your account name."
+    description="Set a custom name for each organization, or use the name from your account."
     variant="subtle"
     icon="i-lucide-id-card"
   >

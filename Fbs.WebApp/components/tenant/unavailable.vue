@@ -27,28 +27,28 @@ async function restoreIt() {
     await restore({ path: { slug: slug.value }, body: undefined })
     await queryClient.invalidateQueries({ queryKey: getMeQueryKey() })
     await queryClient.invalidateQueries({ queryKey: getOrgQueryKey({ path: { slug: slug.value } }) })
-    toast.add({ title: 'Organization restored successfully', color: 'success' })
+    toast.add({ title: 'Organization restored', color: 'success' })
   }
   catch (e) {
-    toast.add({ title: 'Failed to restore organization', description: getErrorReasons(e)[0] ?? 'Please try again in a moment.', color: 'error' })
+    toast.add({ title: 'Couldn\'t restore organization', description: getErrorReasons(e)[0] ?? 'Try again in a moment.', color: 'error' })
   }
 }
 
 const shown = computed(() => {
   switch (code.value) {
     case 'pending':
-      return { icon: 'i-lucide-hourglass', title: 'Pending administrator approval', description: 'An administrator must approve your membership before you can access this organization.' }
+      return { icon: 'i-lucide-hourglass', title: 'Waiting for an admin', description: 'An admin needs to approve your access before you can view this organization.' }
     case 'pending-deletion':
       return {
         icon: 'i-lucide-trash-2',
         title: 'This organization is to be deleted',
-        description: `An administrator scheduled this organization for deletion${deletedOn.value ? `, on ${deletedOn.value} at the earliest` : ''}. Access is suspended${canRestore.value ? ', but you can restore it' : ', and any admin of it can restore it'}.`,
+        description: `An admin scheduled this organization for deletion${deletedOn.value ? `, on ${deletedOn.value} at the earliest` : ''}. Access is suspended${canRestore.value ? ', but you can restore it' : ', and any admin can restore it'}.`,
       }
     case 'unavailable':
-      return { icon: 'i-lucide-circle-slash', title: 'Organization suspended', description: 'This organization has been temporarily suspended. Please contact an administrator.' }
+      return { icon: 'i-lucide-circle-slash', title: 'This organization isn\'t available', description: 'It has been temporarily suspended. Check with an administrator.' }
     default:
       return status.value === 404
-        ? { icon: 'i-lucide-circle-slash', title: 'Organization not found', description: 'This organization does not exist, or you may not be a member.' }
+        ? { icon: 'i-lucide-circle-slash', title: 'There is no such organization', description: 'This organization doesn\'t exist, or you might not be a member.' }
         : { icon: 'i-lucide-circle-slash', title: 'Something went wrong', description: 'Please try again in a moment.' }
   }
 })

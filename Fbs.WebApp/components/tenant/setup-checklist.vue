@@ -27,7 +27,7 @@ const steps = computed(() => [
   {
     id: 'units',
     title: 'Add your units',
-    description: 'Optional. Group members into teams or departments to control access to restricted facilities.',
+    description: 'Optional. Group members into teams or departments so you can limit facility access by unit.',
     done: (units.value?.length ?? 0) > 0,
     to: path('admin', 'units'),
     action: 'Add units',
@@ -36,7 +36,7 @@ const steps = computed(() => [
   {
     id: 'people',
     title: 'Invite people',
-    description: 'Share an invite link with your members or add them directly by phone number.',
+    description: 'Share an invite link with your members or add them by phone number.',
     done: (invites.value?.length ?? 0) > 0 || (members.value?.length ?? 0) > 1,
     to: path('admin', 'invites'),
     action: 'Make a link',
@@ -60,7 +60,7 @@ function hide() {
   >
     <UPageCard
       title="Set up your organization"
-      description="Recommended steps to get your organization ready for bookings."
+      description="Things to finish before members can start booking."
       variant="subtle"
     >
       <ol class="space-y-3">

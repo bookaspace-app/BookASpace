@@ -223,7 +223,7 @@ async function confirmStop() {
             <template #description>
               <div class="space-y-3">
                 <p>
-                  Please copy this link now. It will not be shown again. If lost, you will need to revoke this link and generate a new one.
+                  Copy this link now. It won't be shown again, so if you lose it, you'll need to create a new one.
                 </p>
                 <div class="flex gap-2">
                   <UInput
@@ -251,7 +251,7 @@ async function confirmStop() {
 
           <UAlert
             v-if="error"
-            title="Unable to load invitation links"
+            title="Couldn't load invite links"
             :description="getErrorReasons(error)[0] ?? 'Please try again in a moment.'"
             color="error"
             variant="subtle"
@@ -322,7 +322,7 @@ async function confirmStop() {
         <UModal
           v-model:open="stoppingOpen"
           title="Stop this link?"
-          description="Anyone with this link will no longer be able to join. Existing members who joined will not be affected. Revoked links cannot be reactivated."
+          description="Nobody else will be able to join using this link. Anyone who already joined will stay in the organization."
         >
           <template #footer>
             <div class="flex gap-2">

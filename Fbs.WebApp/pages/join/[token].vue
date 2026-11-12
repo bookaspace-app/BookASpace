@@ -64,7 +64,7 @@ async function join() {
     <UAlert
       v-if="full"
       title="This organization is full"
-      description="The organization has reached its maximum member limit. An administrator must free up a spot before new members can join."
+      description="The organization has reached its member limit. An admin needs to remove someone before new members can join."
       color="warning"
       variant="subtle"
       icon="i-lucide-users-round"
@@ -73,7 +73,7 @@ async function join() {
     <UPageCard
       v-if="outcome"
       :title="`You asked to join ${outcome.name}`"
-      description="An administrator must approve your request before you can access the organization. You may safely navigate away while waiting."
+      description="An admin needs to approve your request before you can start booking. You can safely leave this page while waiting."
       variant="subtle"
       icon="i-lucide-hourglass"
     >
@@ -87,8 +87,8 @@ async function join() {
 
     <UAlert
       v-else-if="removed"
-      title="You have been removed from this organization"
-      description="Please contact an organization administrator to restore your access."
+      title="You've been removed from this organization"
+      description="Ask an admin if you need access restored."
       color="warning"
       variant="subtle"
       icon="i-lucide-triangle-alert"
@@ -104,7 +104,7 @@ async function join() {
     <UPageCard
       v-else-if="error || !invite"
       title="This link doesn't work"
-      description="This invitation link has expired, reached its usage limit, or been revoked. Please ask an administrator for a new link."
+      description="This invite link has expired, was used up, or was stopped. Ask an admin for a new link."
       variant="subtle"
       icon="i-lucide-link-2-off"
     >
@@ -119,7 +119,7 @@ async function join() {
     <UPageCard
       v-else
       :title="`Join ${invite.organizationName}`"
-      :description="invite.requiresApproval ? 'Your request will be sent to an administrator for approval.' : 'Accepting this invitation will add you to the organization.'"
+      :description="invite.requiresApproval ? 'An admin will need to approve you before you can start booking.' : 'You will be added to the organization right away.'"
       variant="subtle"
       icon="i-lucide-user-plus"
     >
@@ -129,7 +129,7 @@ async function join() {
       >
         <UFormField
           label="Your name"
-          description="How your name appears to other members. If left unchanged, it defaults to your account name."
+          description="How your name will appear to other members. Defaults to your account name."
         >
           <UInput
             v-model="displayName"

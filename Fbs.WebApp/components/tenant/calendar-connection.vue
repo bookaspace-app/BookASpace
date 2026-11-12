@@ -130,13 +130,13 @@ async function stop() {
 <template>
   <UPageCard
     title="Google Calendar"
-    description="Automatically sync bookings to an external Google Calendar. Changes made directly in Google Calendar will not sync back."
+    description="Sync bookings to a Google Calendar. Changes you make in Google Calendar won't sync back to BookASpace."
     variant="subtle"
     icon="i-lucide-calendar"
   >
     <UAlert
       v-if="error"
-      title="Failed to load calendar settings"
+      title="Couldn't load calendar settings"
       :description="getErrorReasons(error)[0] ?? 'Try again in a moment.'"
       color="error"
       variant="subtle"
@@ -161,7 +161,7 @@ async function stop() {
       <UAlert
         v-if="calendar.status === 'Failed'"
         title="Sync paused"
-        :description="calendar.lastError || 'Google Calendar sync failed. Please verify sharing permissions and reconnect.'"
+        :description="calendar.lastError || 'Sync failed. Check that BookASpace has permission to edit the calendar, then reconnect.'"
         color="error"
         variant="subtle"
         icon="i-lucide-circle-alert"
@@ -183,7 +183,7 @@ async function stop() {
           @click="stop"
         />
         <p class="text-sm text-muted">
-          Previously synced events will remain on your Google Calendar.
+          Events already synced will stay on your Google Calendar.
         </p>
       </div>
 
@@ -196,7 +196,7 @@ async function stop() {
         @submit="submitCode"
       >
         <p class="text-sm">
-          A verification event starting with "Fbs" has been created in <span class="font-medium">{{ calendar.calendarId }}</span>. Enter the verification code found in its title.
+          Look for an event starting with "Fbs" in <span class="font-medium">{{ calendar.calendarId }}</span>, and enter the code from its title here.
           <template v-if="until(calendar.verificationExpiresAt)">
             Code expires {{ until(calendar.verificationExpiresAt) }}.
           </template>
@@ -252,13 +252,13 @@ async function stop() {
           v-if="calendar.serviceAccountEmail"
           class="text-sm text-muted"
         >
-          Share your Google Calendar with <span class="text-default">{{ calendar.serviceAccountEmail }}</span> and grant permission to "Make changes to events".
+          Share your Google Calendar with <span class="text-default">{{ calendar.serviceAccountEmail }}</span> with permission to "Make changes to events".
         </p>
         <p
           v-else
           class="text-sm text-muted"
         >
-          Share your Google Calendar with the application service account and grant permission to "Make changes to events".
+          Share your Google Calendar with the service account and give it permission to "Make changes to events".
         </p>
         <UFormField
           label="Calendar id"
