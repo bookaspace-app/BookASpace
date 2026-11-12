@@ -116,7 +116,7 @@ function validate(values: typeof state): FormError[] {
     errors.push({ name: 'pocPhone', message: 'Phone number is required.' })
   }
   else if (values.pocPhone.length !== 8) {
-    errors.push({ name: 'pocPhone', message: 'Please enter an 8-digit phone number.' })
+    errors.push({ name: 'pocPhone', message: 'Enter an 8-digit phone number.' })
   }
 
   return errors
@@ -170,7 +170,7 @@ function onFormSubmit({ data }: FormSubmitEvent<typeof state>) {
       // The batch is all or nothing, so nothing was booked
       const count = Object.keys(slotErrors).length
       errorToastId = toast.add({
-        title: submitted.length > 1 && count ? 'Bookings could not be completed' : 'Unable to create booking',
+        title: submitted.length > 1 && count ? 'Couldn\'t finish bookings' : 'Couldn\'t create booking',
         description: submitted.length > 1 && count
           ? `${count} ${count === 1 ? 'slot is' : 'slots are'} unavailable. Remove ${count === 1 ? 'it' : 'them'} and try again.`
           : Object.values(slotErrors)[0] ?? otherErrors[0],
@@ -339,11 +339,11 @@ function onFormSubmit({ data }: FormSubmitEvent<typeof state>) {
               variant="subtle"
               icon="i-lucide-circle-alert"
               :title="slots.length === 1
-                ? 'This slot cannot be booked.'
+                ? 'This slot is no longer available.'
                 : `${problemCount} ${problemCount === 1 ? 'slot is' : 'slots are'} unavailable.`"
               :description="slots.length === 1
-                ? 'Please return to the timeline and select another time.'
-                : 'Bookings must be confirmed together. Please remove conflicting slots to continue.'"
+                ? 'Head back to the timeline and pick another time.'
+                : 'These slots are booked together. Remove the conflicting ones to continue.'"
               :actions="fromList
                 ? [{ label: problemCount === 1 ? 'Remove slot' : 'Remove conflicting slots', color: 'error', variant: 'outline', onClick: removeProblemSlots }]
                 : [{ label: 'Choose another time', to: `/booking/new${originalQuery}`, color: 'error', variant: 'outline' }]"
@@ -415,10 +415,10 @@ function onFormSubmit({ data }: FormSubmitEvent<typeof state>) {
             color="primary"
             variant="subtle"
             icon="i-lucide-heart-handshake"
-            title="Shared space etiquette"
+            title="A quick reminder"
           >
             <template #description>
-              <p>Please book only what you need, and leave the facility clean and ready for the next person.</p>
+              <p>Book only the time you need, and leave the space clean for the next group.</p>
             </template>
           </UAlert>
 

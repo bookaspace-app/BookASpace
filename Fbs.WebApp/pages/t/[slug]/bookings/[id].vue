@@ -77,7 +77,7 @@ async function submit() {
   }
   catch (e) {
     const reasons = getErrorReasons(e)
-    problems.value = reasons.length ? reasons : [getErrorStatus(e) === 403 ? 'You can only edit bookings made by you or your unit.' : 'Unable to save changes. Please try again.']
+    problems.value = reasons.length ? reasons : [getErrorStatus(e) === 403 ? 'You can only edit bookings made by you or your unit.' : 'Couldn\'t save changes. Please try again.']
   }
 }
 
@@ -109,7 +109,7 @@ async function cancelBooking() {
     await router.push(path())
   }
   catch {
-    toast.add({ title: 'Unable to cancel booking', description: 'This booking may have already been cancelled.', color: 'error' })
+    toast.add({ title: 'Couldn\'t cancel booking', description: 'This booking may have already been cancelled.', color: 'error' })
     cancelling.value = false
     await invalidateBookings(slug.value)
   }
@@ -225,7 +225,7 @@ const details = computed(() => {
               v-else
               class="text-sm text-muted"
             >
-              Only {{ booking.bookedBy.displayName }}, members of their unit, or administrators can edit this booking.
+              Only {{ booking.bookedBy.displayName }}, their unit and admins can change this.
             </p>
           </UPageCard>
 
@@ -304,7 +304,7 @@ const details = computed(() => {
 
               <UAlert
                 v-if="problems.length"
-                title="Unable to save changes"
+                title="Couldn't save changes"
                 color="error"
                 variant="subtle"
                 icon="i-lucide-circle-alert"
@@ -343,7 +343,7 @@ const details = computed(() => {
       <UModal
         v-model:open="cancelling"
         title="Cancel this booking?"
-        description="The time slot will be released for others to book. Subscribed members will be notified of the cancellation."
+        description="The time slot will be released for others to book. Anyone notified of this booking will be told it was cancelled."
       >
         <template #footer>
           <div class="flex gap-2">

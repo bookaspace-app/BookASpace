@@ -181,12 +181,12 @@ async function confirmDelete() {
       <template #body>
         <div class="max-w-3xl space-y-6">
           <p class="text-sm text-muted">
-            Make facilities available to everyone or restrict them to specific units. Administrators can book all facilities.
+            Make facilities available to everyone or limit them to specific units. Admins can always book any facility.
           </p>
 
           <UAlert
             v-if="error"
-            title="Unable to load facilities"
+            title="Couldn't load facilities"
             :description="getErrorReasons(error)[0] ?? 'Please try again in a moment.'"
             color="error"
             variant="subtle"
@@ -238,7 +238,7 @@ async function confirmDelete() {
                     {{ facility.name }}
                   </p>
                   <p class="truncate text-sm text-muted">
-                    Access: {{ whoCanBook(facility) }}
+                    Bookable by: {{ whoCanBook(facility) }}
                   </p>
                 </div>
                 <UButton
@@ -297,7 +297,7 @@ async function confirmDelete() {
               <UFormField
                 label="Group"
                 name="group"
-                description="Category or section heading, such as 'Indoor' or 'Outdoor'. Defaults to 'Other' if left blank."
+                description="Heading or section, like 'Indoor' or 'Outdoor'. Defaults to 'Other' if left blank."
               >
                 <UInput
                   v-model="state.group"
@@ -317,7 +317,7 @@ async function confirmDelete() {
               <UFormField
                 name="availableToAll"
                 label="Everyone can book it"
-                description="When disabled, access is restricted to selected units. Administrators can always book."
+                description="When turned off, only selected units can book. Admins can always book."
               >
                 <USwitch
                   v-model="state.availableToAll"
@@ -363,7 +363,7 @@ async function confirmDelete() {
         <UModal
           v-model:open="deletingOpen"
           :title="`Delete ${deleting?.name ?? 'facility'}?`"
-          description="Facilities with existing bookings cannot be deleted. If there are no bookings, the facility will be removed permanently."
+          description="Facilities with bookings cannot be deleted. Cancel any bookings first."
         >
           <template #body>
             <UAlert

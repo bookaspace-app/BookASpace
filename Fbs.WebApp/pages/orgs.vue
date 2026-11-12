@@ -28,7 +28,7 @@ function remember(place: { tenantSlug: string, status: string, tenantStatus: str
   <div class="space-y-6">
     <UPageCard
       title="Your organizations"
-      description="Select an organization to manage or view bookings. You can also create a new organization or join with an invite link below."
+      description="Choose an organization to open, or create a new one below."
       variant="naked"
     />
 
@@ -52,7 +52,7 @@ function remember(place: { tenantSlug: string, status: string, tenantStatus: str
           v-for="place in places"
           :key="place.tenantSlug"
           :title="place.tenantName"
-          :description="place.status !== 'Active' ? 'Pending administrator approval' : place.tenantStatus === 'PendingDeletion' ? `To be deleted${deletedOn(place.deleteAfter) ? `, on ${deletedOn(place.deleteAfter)} at the earliest` : ''}` : place.tenantStatus === 'Suspended' ? 'Suspended' : `${place.role === 'Admin' ? 'Administrator' : 'Member'} · ${place.displayName}`"
+          :description="place.status !== 'Active' ? 'Waiting for admin approval' : place.tenantStatus === 'PendingDeletion' ? `To be deleted${deletedOn(place.deleteAfter) ? `, on ${deletedOn(place.deleteAfter)} at the earliest` : ''}` : place.tenantStatus === 'Suspended' ? 'Suspended' : `${place.role === 'Admin' ? 'Admin' : 'Member'} · ${place.displayName}`"
           :to="leadsSomewhere(place) ? `/t/${place.tenantSlug}` : undefined"
           variant="subtle"
           icon="i-lucide-building-2"
@@ -88,8 +88,8 @@ function remember(place: { tenantSlug: string, status: string, tenantStatus: str
 
       <UAlert
         v-else
-        title="You have not joined any organizations yet"
-        description="Create a new organization for your team, or join an existing one using an invitation link."
+        title="No organizations yet"
+        description="Create one for your team, or join with an invite link."
         color="neutral"
         variant="subtle"
         icon="i-lucide-info"

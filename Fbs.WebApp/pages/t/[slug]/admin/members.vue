@@ -48,7 +48,7 @@ const statusColor = { Active: 'success', Pending: 'warning', Unclaimed: 'neutral
 const statusHint: Record<Member['status'], string> = {
   Active: 'Active',
   Pending: 'Pending approval',
-  Unclaimed: 'Invited by phone. Automatically joins upon sign-in',
+  Unclaimed: 'Invited by phone. Will join once they sign in',
   Removed: 'Removed',
 }
 
@@ -221,7 +221,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
           <UAlert
             v-if="waitingCount"
             :title="waitingCount === 1 ? 'Somebody is waiting to be let in' : `${waitingCount} people are waiting to be let in`"
-            description="They joined via an invitation link and require approval before they can view or book facilities."
+            description="They joined using an invite link and need approval before they can view or book facilities."
             color="warning"
             variant="subtle"
             icon="i-lucide-hourglass"
@@ -229,7 +229,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
 
           <UAlert
             v-if="error"
-            title="Unable to load members"
+            title="Couldn't load members"
             :description="getErrorReasons(error)[0] ?? 'Please try again in a moment.'"
             color="error"
             variant="subtle"
@@ -305,7 +305,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
                   />
                 </p>
                 <p class="truncate text-sm text-muted">
-                  {{ [member.phone, unitName(member.unitId)].filter(Boolean).join(' · ') || 'No phone or unit assigned' }}
+                  {{ [member.phone, unitName(member.unitId)].filter(Boolean).join(' · ') || 'No phone or unit' }}
                 </p>
               </div>
 
@@ -364,7 +364,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
         <UModal
           v-model:open="editing"
           :title="editingMember ? `Edit ${editingMember.displayName}` : 'Add member'"
-          :description="editingMember ? undefined : 'Members can also join directly via an invitation link without entering their phone number in advance.'"
+          :description="editingMember ? undefined : 'People can also join using an invite link without needing their phone number added first.'"
         >
           <template #body>
             <UForm
@@ -437,7 +437,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
               <UFormField
                 label="Tell them about"
                 name="notificationScope"
-                description="Notifications will be sent via Telegram once connected."
+                description="Sent via Telegram once they connect their account."
               >
                 <USelect
                   v-model="state.notificationScope"
@@ -468,7 +468,7 @@ const initials = (name: string) => name.split(/\s+/).filter(Boolean).slice(0, 2)
         <UModal
           v-model:open="removingOpen"
           :title="removing?.status === 'Pending' ? `Turn ${removing.displayName} away?` : `Remove ${removing?.displayName ?? 'them'}?`"
-          :description="removing?.status === 'Pending' ? 'No notification will be sent. The person can request to join again using an invitation link.' : 'They will lose access immediately. Existing bookings will be preserved, and access can be restored later.'"
+          :description="removing?.status === 'Pending' ? 'They won\'t be notified, but can request to join again using an invite link.' : 'They will lose access immediately. Their past bookings stay, and you can let them back in later.'"
         >
           <template #body>
             <UAlert

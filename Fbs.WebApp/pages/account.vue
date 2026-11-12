@@ -30,7 +30,7 @@ async function connect() {
     window.open(link.url, '_blank', 'noopener')
   }
   catch (error) {
-    toast.add({ title: getErrorStatus(error) === 429 ? 'Too many attempts' : 'Could not generate link', description: 'Please wait a moment and try again.', color: 'error' })
+    toast.add({ title: getErrorStatus(error) === 429 ? 'Too many attempts' : 'Couldn\'t create link', description: 'Try again in a moment.', color: 'error' })
   }
 }
 
@@ -50,8 +50,8 @@ async function downloadMyData() {
   }
   catch (error) {
     toast.add({
-      title: getErrorStatus(error) === 429 ? 'Too many attempts' : 'Failed to export data',
-      description: getErrorStatus(error) === 429 ? 'Please wait a moment and try again.' : 'Please try again in a moment.',
+      title: getErrorStatus(error) === 429 ? 'Too many attempts' : 'Couldn\'t export data',
+      description: 'Try again in a moment.',
       color: 'error',
     })
   }
@@ -61,7 +61,7 @@ async function downloadMyData() {
 }
 
 const fields = computed(() => [
-  { label: 'Name', description: 'Your default account name, used unless overridden within specific organizations', value: me.value?.name },
+  { label: 'Name', description: 'Used everywhere unless changed for a specific organization.', value: me.value?.name },
   { label: 'Email', description: 'The email you sign in with', value: me.value?.email },
 ])
 </script>
@@ -70,7 +70,7 @@ const fields = computed(() => [
   <div class="space-y-6">
     <UPageCard
       title="Your account"
-      description="Manage your account profile, data export, and external integrations."
+      description="Manage your account details, notifications, and personal data."
       variant="naked"
     />
 
@@ -114,7 +114,7 @@ const fields = computed(() => [
 
     <UPageCard
       title="Your data"
-      description="Export a copy of your account profile, organization memberships, and booking history."
+      description="Download your profile, memberships, and booking history as a JSON file."
       variant="subtle"
       icon="i-lucide-download"
     >

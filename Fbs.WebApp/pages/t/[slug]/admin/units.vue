@@ -122,12 +122,12 @@ async function confirmDelete() {
       <template #body>
         <div class="max-w-2xl space-y-6">
           <p class="text-sm text-muted">
-            Organize members into teams or departments. Unit membership determines facility access, and unit members can manage each other's bookings.
+            Group members into teams or departments. Units let you restrict facility access, and members in the same unit can cancel each other's bookings.
           </p>
 
           <UAlert
             v-if="error"
-            title="Unable to load units"
+            title="Couldn't load units"
             :description="getErrorReasons(error)[0] ?? 'Please try again in a moment.'"
             color="error"
             variant="subtle"
@@ -177,7 +177,7 @@ async function confirmDelete() {
             v-else-if="!sorted.length && !error"
             class="text-center text-muted"
           >
-            There are no units yet, and you can leave it that way. Members will not belong to any unit, and restricted facilities can only be booked by administrators.
+            No units yet. You don't need them unless you want to restrict facilities to specific groups.
           </p>
 
           <ul
@@ -246,7 +246,7 @@ async function confirmDelete() {
         <UModal
           v-model:open="deletingOpen"
           :title="`Delete ${deleting?.name ?? 'unit'}?`"
-          description="A unit must be empty before it can be deleted. Please reassign any members and remove existing bookings first."
+          description="You can only delete an empty unit. Move its members and bookings elsewhere first."
         >
           <template #body>
             <UAlert

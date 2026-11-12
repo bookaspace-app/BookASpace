@@ -24,19 +24,19 @@ const afterwards = computed(() => [
   },
   {
     title: 'Timeline',
-    description: 'Visual overview of facility availability across multiple days.',
+    description: 'See what is booked across every facility over the coming days.',
     icon: 'i-lucide-chart-gantt',
     to: path('timeline'),
   },
   {
     title: 'Changing or cancelling',
-    description: 'Open a booking from the list or double-click it on the calendar to view, modify, or cancel it.',
+    description: 'Open any booking from the list or calendar to view, update, or cancel it.',
     icon: 'i-lucide-pencil',
     to: path(),
   },
   {
     title: 'Telegram',
-    description: 'Receive instant booking notifications on Telegram. Connect your account in settings.',
+    description: 'Get booking alerts on Telegram by connecting your account.',
     icon: 'i-simple-icons-telegram',
     to: '/account',
   },
@@ -53,7 +53,7 @@ const afterwards = computed(() => [
       <div class="mx-auto w-full max-w-3xl space-y-8">
         <UPageCard
           :title="`Booking at ${org?.name ?? 'your organization'}`"
-          description="Learn how to reserve facilities in just a few simple steps. Nothing is booked until you confirm, so feel free to explore."
+          description="Reserve a facility in a couple of clicks. Nothing is confirmed until you submit, so feel free to test it out."
           variant="subtle"
         >
           <div class="flex flex-wrap gap-2">
@@ -175,7 +175,7 @@ const afterwards = computed(() => [
                 Booking multiple slots? Add to list
               </h2>
               <p class="step__text">
-                Click <strong>Add to list</strong> to stage your current selection. You can also use <strong>Book multiple</strong> to select several facilities or dates at once. Staged slots are submitted together under a single conduct and point of contact.
+                Click <strong>Add to list</strong> to save the time slot you picked and choose another. You can also use <strong>Book multiple</strong> to pick several facilities or dates at once. All slots are submitted together under the same event name and point of contact.
               </p>
             </div>
           </li>
@@ -187,7 +187,7 @@ const afterwards = computed(() => [
                 Confirm
               </h2>
               <p class="step__text">
-                Enter the event details and point of contact, then click <strong>Confirm</strong>. If any slot conflicts with an existing booking, the batch will not proceed until conflicting slots are removed.
+                Fill in the event name and point of contact, then click <strong>Confirm</strong>. If any slot clashes with an existing booking, remove it before confirming.
               </p>
             </div>
           </li>
@@ -218,7 +218,7 @@ const afterwards = computed(() => [
 
         <div class="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-default p-4">
           <p class="text-sm text-muted">
-            Ready to start? Launch the interactive walkthrough to try it on the calendar.
+            Ready to start? Take a guided walkthrough on the calendar.
           </p>
           <UButton
             :to="walkthrough"
