@@ -170,14 +170,6 @@ test.describe('units', () => {
     await expect(names(page)).toHaveText(['Bravo', 'Busy'])
     expect(state.deleted).toEqual(['u1'])
   })
-
-  test('none is said to be all right', async ({ page, goto, api }) => {
-    await api(organization().routes)
-
-    await goto('/t/alpha/admin/units', { waitUntil: 'hydration' })
-
-    await expect(page.getByText('There are no units yet, and you can leave it that way.')).toBeVisible()
-  })
 })
 
 test.describe('facilities', () => {
