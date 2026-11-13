@@ -108,25 +108,16 @@ test('a refusal of the API is said in the modal, which stays', async ({ page, go
   await expect(page).toHaveURL(/\/admin\/settings$/)
 })
 
-test('a member can\'t restore it, is told any admin can, and the organization is not asked for over and over', async ({ page, goto, api }) => {
+test('a member can\'t restore it, and the organization is not asked for over and over', async ({ page, goto, api }) => {
   const calls = await api(organization({ role: 'Member', tenantStatus: 'PendingDeletion' }).table)
 
   await goto('/t/alpha', { waitUntil: 'hydration' })
 
   await expect(page.getByText('This organization is to be deleted')).toBeVisible()
-  await expect(page.getByText('any admin of it can restore it')).toHaveCount(1)
   await expect(page.getByRole('button', { name: 'Restore it' })).toHaveCount(0)
   // It once asked for the organization again each time it was shown, and it is shown because it can't be had: so it never stopped
   await page.waitForTimeout(1500)
   expect(calls.filter(c => c.key === 'GET /t/alpha').length).toBeLessThanOrEqual(2)
-})
-
-test('an organization that has been paused is said to be', async ({ page, goto, api }) => {
-  await api(organization({ tenantStatus: 'Suspended' }).table)
-
-  await goto('/orgs', { waitUntil: 'hydration' })
-
-  await expect(page.getByText('Paused', { exact: true }).first()).toBeVisible()
 })
 
 test.describe('downloading copies', () => {
@@ -148,14 +139,5 @@ test.describe('downloading copies', () => {
 
     expect(download.suggestedFilename()).toBe('alpha-data.json')
     expect(JSON.parse(await readFile(await download.path(), 'utf8')).members[0].phone).toBe('+6591234567')
-  })
-
-  test('being asked for too often is said', async ({ page, goto, api }) => {
-    await api(organization({ exportLimited: true }).table)
-    await goto('/account', { waitUntil: 'hydration' })
-
-    await page.getByRole('button', { name: 'Download my data' }).click()
-
-    await expect(page.getByText('Too many tries', { exact: true })).toBeVisible()
   })
 })

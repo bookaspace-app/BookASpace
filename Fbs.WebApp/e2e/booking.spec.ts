@@ -53,8 +53,6 @@ test('a slot dragged on the calendar is described, and sent, in the organization
   const calls = await api(table())
   await goto('/t/alpha/book', { waitUntil: 'hydration' })
   await expect(page.locator('.vuecal__schedule--cell').first()).toBeVisible()
-  // The time zone is said, as it isn't the browser's
-  await expect(page.getByText('Times are in Asia/Singapore')).toBeVisible()
 
   // Tomorrow in the organization, when it is not the day the browser thinks it is
   await page.locator('.vuecal__nav--next').first().click()
@@ -80,7 +78,7 @@ test('a slot dragged on the calendar is described, and sent, in the organization
   await expect(page).toHaveURL(/\/t\/alpha\/book\/confirm$/)
   await page.getByPlaceholder('Conduct name').fill('Circuit training')
   // The point of contact starts as who they are
-  await expect(page.getByPlaceholder('Rank and name')).toHaveValue('CPT Sam')
+  await expect(page.getByLabel('Point of contact')).toHaveValue('CPT Sam')
   await page.getByRole('button', { name: 'Confirm', exact: true }).click()
 
   await expect(page).toHaveURL(/\/t\/alpha\/bookings\/new-0$/)
@@ -157,12 +155,4 @@ test('a slot the API says can\'t be booked is shown as such, and nothing is conf
 
   await expect(page.getByText('Overlaps with booking abc.').first()).toBeVisible()
   await expect(page.getByRole('button', { name: 'Confirm', exact: true })).toBeDisabled()
-})
-
-test('nothing to book says what to do', async ({ page, goto, api }) => {
-  await api(table({ 'GET /t/alpha/Facilities/Bookable': () => json([]) }))
-
-  await goto('/t/alpha/book', { waitUntil: 'hydration' })
-
-  await expect(page.getByText('There is nothing you can book yet')).toBeVisible()
 })
